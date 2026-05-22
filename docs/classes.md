@@ -70,6 +70,17 @@
 </blockquote>
 </details>
 
+<details id="category">
+<summary><strong><a href="../app/models/category.rb">Category</a></strong></summary>
+<blockquote>
+
+<details><summary>extends</summary>ApplicationRecord</details>
+<details><summary>atributos</summary>name: string (required, unique case-insensitive)</details>
+<details><summary>dependencias</summary>has_many :products — adicionado no domínio Product</details>
+
+</blockquote>
+</details>
+
 </blockquote>
 </details>
 
@@ -109,6 +120,17 @@
 
 </blockquote>
 </details>
+
+</blockquote>
+</details>
+
+<details id="categories-controller">
+<summary><strong><a href="../app/controllers/categories_controller.rb">CategoriesController</a></strong></summary>
+<blockquote>
+
+<details><summary>extends</summary><a href="#application-controller">ApplicationController</a></details>
+<details><summary>metodos</summary>index, show, new, create, edit, update, destroy</details>
+<details><summary>auth</summary>require_admin em new, create, edit, update, destroy — index e show para todos autenticados</details>
 
 </blockquote>
 </details>

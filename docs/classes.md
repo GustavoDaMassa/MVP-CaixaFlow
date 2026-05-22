@@ -44,7 +44,31 @@
 <summary><strong>models/</strong></summary>
 <blockquote>
 
-<!-- preenchido na Fase 5 conforme cada model for criado -->
+<details id="user">
+<summary><strong><a href="../app/models/user.rb">User</a> [Devise]</strong></summary>
+<blockquote>
+
+<details><summary>extends</summary>ApplicationRecord</details>
+<details><summary>implements</summary>Devise — database_authenticatable, registerable, recoverable, rememberable, validatable</details>
+<details><summary>atributos</summary>
+
+- `name: string` — obrigatório
+- `email: string` — obrigatório, único (Devise)
+- `encrypted_password: string` (Devise)
+- `role: integer` — enum `{ admin: 0, atendente: 1 }`, default: atendente
+- `active: boolean` — default: true (via before_create)
+
+</details>
+<details><summary>metodos</summary>
+
+- `admin?` — via enum Rails
+- `atendente?` — via enum Rails
+- `set_active_default` (private) — before_create
+
+</details>
+
+</blockquote>
+</details>
 
 </blockquote>
 </details>
@@ -53,16 +77,41 @@
 <summary><strong>controllers/</strong></summary>
 <blockquote>
 
-<details id="dir-controllers-admin">
-<summary><strong>admin/</strong></summary>
+<details id="application-controller">
+<summary><strong><a href="../app/controllers/application_controller.rb">ApplicationController</a></strong></summary>
 <blockquote>
 
-<!-- preenchido na Fase 5 -->
+<details><summary>extends</summary>ActionController::Base</details>
+<details><summary>metodos</summary>
+
+- `before_action :authenticate_user!` — Devise, global
+- `require_admin` (private) — redireciona se não for admin
+
+</details>
 
 </blockquote>
 </details>
 
-<!-- preenchido na Fase 5 -->
+<details id="dir-controllers-admin">
+<summary><strong>admin/</strong></summary>
+<blockquote>
+
+<details id="admin-base-controller">
+<summary><strong><a href="../app/controllers/admin/base_controller.rb">Admin::BaseController</a></strong></summary>
+<blockquote>
+
+<details><summary>extends</summary><a href="#application-controller">ApplicationController</a></details>
+<details><summary>metodos</summary>
+
+- `before_action :require_admin` — restringe acesso a admins
+
+</details>
+
+</blockquote>
+</details>
+
+</blockquote>
+</details>
 
 </blockquote>
 </details>

@@ -1,0 +1,11 @@
+<%= form_with model: order do |f| %>
+  <%= f.collection_select :customer_id, @customers, :id, :name, { include_blank: "Venda de balcão" } %>
+  <%= f.text_area :notes %>
+  <%= f.datetime_local_field :scheduled_for %>
+  <%= f.fields_for :order_items do |item_f| %>
+    <%= item_f.collection_select :product_id, @products, :id, :name %>
+    <%= item_f.number_field :quantity, min: 1, value: 1 %>
+    <%= item_f.hidden_field :unit_price %>
+  <% end %>
+  <%= f.submit %>
+<% end %>

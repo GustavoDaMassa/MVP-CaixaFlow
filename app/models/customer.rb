@@ -1,5 +1,5 @@
 class Customer < ApplicationRecord
-  has_many :orders, dependent: :nullify
+  has_many :orders, dependent: :nullify, foreign_key: :customer_id
 
   validates :name, presence: true
 

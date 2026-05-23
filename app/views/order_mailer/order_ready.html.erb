@@ -1,0 +1,9 @@
+<h2>Olá, <%= @order.customer.name %>!</h2>
+
+<p>Seu pedido <strong>#<%= @order.id %></strong> está pronto para retirada.</p>
+
+<% if @order.notes.present? %>
+  <p><strong>Observações:</strong> <%= @order.notes %></p>
+<% end %>
+
+<p>Obrigado pela preferência!</p>

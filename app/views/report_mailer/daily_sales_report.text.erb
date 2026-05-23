@@ -1,0 +1,12 @@
+Relatório de vendas — <%= I18n.l(@today, format: :long) %>
+
+Olá, <%= @admin.name %>.
+
+Resumo do dia:
+- Total de pedidos: <%= @orders.count %>
+- Faturamento (entregues): R$ <%= number_with_precision(@revenue, precision: 2, delimiter: ".") %>
+
+Pedidos por status:
+<% Order.statuses.each_key do |status| %>
+- <%= status.capitalize %>: <%= @orders.where(status: status).count %>
+<% end %>

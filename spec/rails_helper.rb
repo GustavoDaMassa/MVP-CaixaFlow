@@ -42,6 +42,8 @@ RSpec.configure do |config|
 
   config.include FactoryBot::Syntax::Methods
   config.include Devise::Test::IntegrationHelpers, type: :request
+
+  config.before(:each, type: :job) { ActiveJob::Base.queue_adapter = :test }
 end
 
 Shoulda::Matchers.configure do |config|

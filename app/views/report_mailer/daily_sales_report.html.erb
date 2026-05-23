@@ -1,0 +1,16 @@
+<h2>Relatório de vendas — <%= I18n.l(@today, format: :long) %></h2>
+
+<p>Olá, <%= @admin.name %>.</p>
+
+<h3>Resumo do dia</h3>
+<ul>
+  <li><strong>Total de pedidos:</strong> <%= @orders.count %></li>
+  <li><strong>Faturamento (entregues):</strong> R$ <%= number_with_precision(@revenue, precision: 2, delimiter: ".") %></li>
+</ul>
+
+<h3>Pedidos por status</h3>
+<ul>
+  <% Order.statuses.each_key do |status| %>
+    <li><strong><%= status.capitalize %>:</strong> <%= @orders.where(status: status).count %></li>
+  <% end %>
+</ul>

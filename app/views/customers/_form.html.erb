@@ -1,0 +1,4 @@
+<%= form_with model: customer do |f| %>
+  <%= f.text_field :name %><%= f.text_field :phone %><%= f.email_field :email %>
+  <%= f.text_field :address %><%= f.text_area :notes %><%= f.submit %>
+<% end %>

@@ -1,0 +1,10 @@
+<%= form_with model: product do |f| %>
+  <%= f.label :name %><%= f.text_field :name %>
+  <%= f.label :description %><%= f.text_area :description %>
+  <%= f.label :price %><%= f.number_field :price, step: 0.01 %>
+  <%= f.label :stock %><%= f.number_field :stock %>
+  <%= f.label :low_stock_threshold %><%= f.number_field :low_stock_threshold %>
+  <%= f.label :category_id %><%= f.collection_select :category_id, @categories, :id, :name, prompt: "Selecione" %>
+  <%= f.label :active %><%= f.check_box :active %>
+  <%= f.submit %>
+<% end %>

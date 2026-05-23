@@ -1,0 +1,3 @@
+<h1>Clientes</h1>
+<% @customers.each do |c| %><p><%= c.name %></p><% end %>
+<%= paginate @customers %>

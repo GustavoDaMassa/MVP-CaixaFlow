@@ -1,5 +1,5 @@
 class Category < ApplicationRecord
-  # has_many :products adicionado no domínio Product
+  has_many :products, dependent: :destroy
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 end

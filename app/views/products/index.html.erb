@@ -1,0 +1,10 @@
+<h1>Produtos</h1>
+<%= search_form_for @q do |f| %>
+  <%= f.label :name_cont, "Nome" %>
+  <%= f.text_field :name_cont %>
+  <%= f.submit "Buscar" %>
+<% end %>
+<% @products.each do |product| %>
+  <p><%= product.name %> — R$ <%= product.price %></p>
+<% end %>
+<%= paginate @products %>

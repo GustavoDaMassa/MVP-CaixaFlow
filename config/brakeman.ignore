@@ -1,0 +1,8 @@
+{
+  "ignored_warnings": [
+    {
+      "fingerprint": "cb5090fb8806b451b20180ceb04a0358f5f8d74d9b172f903603aacaf98d7889",
+      "note": "Intencional: role/active são gerenciados exclusivamente por admins via Admin::BaseController#require_admin"
+    }
+  ]
+}

@@ -5,8 +5,6 @@ RSpec.describe Product, type: :model do
     it { should validate_presence_of(:name) }
     it { should validate_presence_of(:price) }
     it { should validate_numericality_of(:price).is_greater_than(0) }
-    it { should validate_numericality_of(:stock).is_greater_than_or_equal_to(0).only_integer }
-    it { should validate_numericality_of(:low_stock_threshold).is_greater_than_or_equal_to(0).only_integer }
     it { should belong_to(:category) }
   end
 
@@ -21,22 +19,6 @@ RSpec.describe Product, type: :model do
       expect(product.active).to be true
     end
 
-    it "has low_stock_threshold of 10 by default" do
-      product = build(:product)
-      expect(product.low_stock_threshold).to eq(10)
-    end
-  end
-
-  describe "#low_stock?" do
-    it "returns true when stock is below threshold" do
-      product = build(:product, stock: 5, low_stock_threshold: 10)
-      expect(product.low_stock?).to be true
-    end
-
-    it "returns false when stock is at or above threshold" do
-      product = build(:product, stock: 10, low_stock_threshold: 10)
-      expect(product.low_stock?).to be false
-    end
   end
 
   describe "Category association" do

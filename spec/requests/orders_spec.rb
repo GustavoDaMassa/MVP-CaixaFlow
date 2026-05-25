@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Orders", type: :request do
-  let(:admin) { create(:user, :admin) }
+  let(:admin)     { create(:user, :admin) }
   let(:atendente) { create(:user) }
 
   describe "GET /orders" do
@@ -22,13 +22,15 @@ RSpec.describe "Orders", type: :request do
     let(:valid_params) do
       {
         order: {
-          notes: "Sem sal",
+          payment_method: "cash",
           order_items_attributes: [
             { product_id: product.id, quantity: 2, unit_price: product.price }
           ]
         }
       }
     end
+
+    before { create(:cash_register, user: admin) }
 
     it "creates order and redirects" do
       sign_in atendente
@@ -40,17 +42,6 @@ RSpec.describe "Orders", type: :request do
       sign_in atendente
       post orders_path, params: valid_params
       expect(Order.last.user).to eq(atendente)
-    end
-  end
-
-  describe "PATCH /orders/:id/update_status" do
-    let(:order) { create(:order, user: atendente) }
-
-    it "updates status and redirects" do
-      sign_in admin
-      patch update_status_order_path(order), params: { order: { status: "preparing" } }
-      expect(response).to redirect_to(order_path(order))
-      expect(order.reload).to be_preparing
     end
   end
 

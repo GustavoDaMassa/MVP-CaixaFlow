@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Admin::Dashboard", type: :request do
-  let(:admin) { create(:user, :admin) }
+  let(:admin)     { create(:user, :admin) }
   let(:atendente) { create(:user) }
 
   describe "GET /admin" do
@@ -21,33 +21,26 @@ RSpec.describe "Admin::Dashboard", type: :request do
     end
 
     context "when authenticated as admin" do
+      before { sign_in admin }
+
       it "returns 200" do
-        sign_in admin
         get admin_root_path
         expect(response).to have_http_status(:ok)
       end
 
-      it "displays orders today by status" do
-        create(:order, status: :pending)
-        create(:order, status: :ready)
-        sign_in admin
+      it "displays payment method breakdown" do
+        create(:order, payment_method: :pix, total: 50.0)
+        create(:order, payment_method: :cash, total: 30.0)
         get admin_root_path
-        expect(response.body).to include("Pending")
-        expect(response.body).to include("Ready")
-      end
-
-      it "displays low stock products" do
-        create(:product, :low_stock, name: "Pamonha Especial")
-        sign_in admin
-        get admin_root_path
-        expect(response.body).to include("Pamonha Especial")
+        expect(response.body).to include("Pix")
+        expect(response.body).to include("Dinheiro")
       end
 
       it "displays recent orders" do
-        create(:order)
-        sign_in admin
+        customer = create(:customer, name: "João Teste")
+        create(:order, customer: customer)
         get admin_root_path
-        expect(response.body).to include("Balcão")
+        expect(response.body).to include("João Teste")
       end
     end
   end

@@ -8,13 +8,13 @@ RSpec.describe Order, type: :model do
   end
 
   describe "enums" do
-    it { should define_enum_for(:status).with_values(pending: 0, preparing: 1, ready: 2, delivered: 3, cancelled: 4) }
+    it { should define_enum_for(:payment_method).with_values(cash: 0, pix: 1, debit_card: 2, credit_card: 3) }
   end
 
   describe "defaults" do
-    it "defaults to pending status" do
+    it "defaults to cash payment method" do
       order = build(:order)
-      expect(order).to be_pending
+      expect(order.payment_method).to eq("cash")
     end
   end
 

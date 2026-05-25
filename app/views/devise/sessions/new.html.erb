@@ -1,35 +1,48 @@
 <% content_for :title, "Entrar" %>
 
-<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg)">
-  <div style="width:100%;max-width:380px;padding:1rem">
-    <div style="text-align:center;margin-bottom:2rem">
-      <h1 style="font-size:1.6rem;font-weight:700;color:var(--primary-dark)">CaixaFlow</h1>
-    </div>
-    <div class="card card-body">
-      <h2 style="font-size:1.1rem;font-weight:600;margin-bottom:1.25rem">Entrar</h2>
+<div class="login-page">
+  <div class="login-page__divider"></div>
 
-      <%= form_for(resource, as: resource_name, url: session_path(resource_name),
-                   html: { data: { turbo: false } }) do |f| %>
-        <div class="form-group">
-          <%= f.label :email, "E-mail" %>
-          <%= f.email_field :email, class: "form-control", autofocus: true, autocomplete: "email" %>
-        </div>
-        <div class="form-group">
-          <%= f.label :password, "Senha" %>
-          <%= f.password_field :password, class: "form-control", autocomplete: "current-password" %>
-        </div>
-        <% if devise_mapping.rememberable? %>
-          <div class="form-group form-check" style="margin-bottom:1rem">
-            <%= f.check_box :remember_me %>
-            <%= f.label :remember_me, "Lembrar de mim" %>
-          </div>
-        <% end %>
-        <%= f.submit "Entrar", class: "btn btn-primary", style: "width:100%" %>
-      <% end %>
+  <div class="login-page__panel">
+    <h1 class="login-page__title">CaixaFlow</h1>
 
-      <div style="margin-top:1rem;font-size:.85rem;display:flex;flex-direction:column;gap:.4rem">
-        <%= render "devise/shared/links" %>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name),
+                 html: { data: { turbo: false }, class: "login-form" }) do |f| %>
+
+      <div class="login-form__group">
+        <%= f.label :email, "E-mail", class: "login-form__label" %>
+        <div class="login-form__input-wrap">
+          <svg class="login-form__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="5" width="16" height="12" rx="2"/>
+            <path d="M2 7l8 5 8-5"/>
+          </svg>
+          <%= f.email_field :email, class: "login-form__input", placeholder: "seu@email.com",
+                autofocus: true, autocomplete: "email" %>
+        </div>
       </div>
-    </div>
+
+      <div class="login-form__group">
+        <%= f.label :password, "Senha", class: "login-form__label" %>
+        <div class="login-form__input-wrap">
+          <svg class="login-form__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="9" width="14" height="10" rx="2"/>
+            <path d="M7 9V6a3 3 0 016 0v3"/>
+          </svg>
+          <%= f.password_field :password, class: "login-form__input", placeholder: "••••••••",
+                autocomplete: "current-password" %>
+        </div>
+      </div>
+
+      <div class="login-form__meta">
+        <% if devise_mapping.rememberable? %>
+          <label class="login-form__remember">
+            <%= f.check_box :remember_me %> Lembrar de mim
+          </label>
+        <% end %>
+        <%= link_to "Esqueceu sua senha?", new_password_path(resource_name), class: "login-form__forgot" %>
+      </div>
+
+      <%= f.submit "Entrar →", class: "login-form__submit" %>
+    <% end %>
   </div>
 </div>

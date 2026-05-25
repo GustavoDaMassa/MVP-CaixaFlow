@@ -4,12 +4,12 @@
 
 /* --- Variables -------------------------------------------- */
 :root {
-  --primary:        #be0032;
-  --primary-dark:   #960027;
-  --primary-light:  #fde6ec;
+  --primary:        #800020;
+  --primary-dark:   #600018;
+  --primary-light:  #fde8ee;
   --bg:             #f9f5f6;
   --surface:        #ffffff;
-  --border:         #e8d5da;
+  --border:         #e6d4d8;
   --text:           #1a1015;
   --text-muted:     #7a636a;
   --danger:         #b91c1c;

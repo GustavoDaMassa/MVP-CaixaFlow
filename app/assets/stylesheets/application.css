@@ -381,8 +381,7 @@ nav.pagination .gap { border: none; background: none; }
 .app-footer__logo {
   width: 100%;
   height: 72px;
-  object-fit: contain;
-  object-position: center bottom;
+  object-fit: fill;
   opacity: .6;
   display: block;
 }

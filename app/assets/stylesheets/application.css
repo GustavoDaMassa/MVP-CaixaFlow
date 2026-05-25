@@ -361,17 +361,33 @@ nav.pagination .gap { border: none; background: none; }
 
 /* --- Footer ----------------------------------------------- */
 .app-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
   display: flex;
   justify-content: center;
-  padding: 1rem 0 0;
   pointer-events: none;
   user-select: none;
 }
-.app-footer__logo {
-  height: 64px;
-  width: auto;
-  opacity: .18;
+.app-footer__inner {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: center;
 }
+.app-footer__logo {
+  width: 100%;
+  height: 72px;
+  object-fit: contain;
+  object-position: center bottom;
+  opacity: .6;
+  display: block;
+}
+/* espaço para o conteúdo não ficar atrás do footer fixo */
+.app-body { padding-bottom: calc(72px + 1rem); }
 
 /* --- POS Login page --------------------------------------- */
 .pos-login-page {

@@ -44,6 +44,7 @@ RSpec.configure do |config|
   config.include Devise::Test::IntegrationHelpers, type: :request
 
   config.before(:each, type: :job) { ActiveJob::Base.queue_adapter = :test }
+  config.before(:each, type: :request) { host! "localhost" }
 end
 
 Shoulda::Matchers.configure do |config|

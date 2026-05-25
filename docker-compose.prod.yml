@@ -61,6 +61,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: caixaflow caixaflow-sidekiq --interval 30 --cleanup
+    environment:
+      DOCKER_API_VERSION: "1.44"
     restart: unless-stopped
 
 volumes:

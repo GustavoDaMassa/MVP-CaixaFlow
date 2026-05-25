@@ -14,6 +14,6 @@ class DashboardStats
   end
 
   def recent_orders
-    Order.includes(:customer, :user).order(created_at: :desc).limit(5)
+    Order.includes(:customer, :user).order(created_at: :desc).limit(4)
   end
 end

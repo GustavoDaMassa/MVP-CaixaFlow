@@ -1,28 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
   <head>
-    <title><%= content_for(:title) || "Caixaflow" %></title>
+    <title><%= content_for(:title) || "CaixaFlow" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= yield :head %>
-
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <%= yield %>
+    <% if user_signed_in? %>
+      <nav class="topnav">
+        <span class="topnav__brand">CaixaFlow</span>
+        <ul class="topnav__links">
+          <li><%= link_to "Pedidos",    orders_path,      class: active_nav_class("orders") %></li>
+          <li><%= link_to "Clientes",   customers_path,   class: active_nav_class("customers") %></li>
+          <li><%= link_to "Produtos",   products_path,    class: active_nav_class("products") %></li>
+          <li><%= link_to "Categorias", categories_path,  class: active_nav_class("categories") %></li>
+          <% if current_user.admin? %>
+            <li><%= link_to "Dashboard", admin_root_path, class: active_nav_class("admin") %></li>
+            <li><%= link_to "Usuários",  admin_users_path, class: active_nav_class("admin/users") %></li>
+          <% end %>
+        </ul>
+        <div class="topnav__user">
+          <span><%= current_user.name %></span>
+          <%= button_to "Sair", destroy_user_session_path, method: :delete, class: "btn btn-sm btn-secondary" %>
+        </div>
+      </nav>
+    <% end %>
+
+    <div class="app-body">
+      <% if notice.present? %>
+        <div class="flash flash--notice"><%= notice %></div>
+      <% end %>
+      <% if alert.present? %>
+        <div class="flash flash--alert"><%= alert %></div>
+      <% end %>
+
+      <%= yield %>
+    </div>
   </body>
 </html>

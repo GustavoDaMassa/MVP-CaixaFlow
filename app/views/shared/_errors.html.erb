@@ -1,0 +1,10 @@
+<% if object.errors.any? %>
+  <div class="error-list">
+    <strong><%= pluralize(object.errors.count, "erro") %> encontrado<%= "s" if object.errors.count > 1 %>:</strong>
+    <ul>
+      <% object.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

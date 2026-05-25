@@ -1,3 +1,41 @@
-<h1><%= @product.name %></h1>
-<p>Preço: R$ <%= @product.price %></p>
-<p>Estoque: <%= @product.stock %></p>
+<% content_for :title, @product.name %>
+<div class="page-header">
+  <h1 class="page-title"><%= @product.name %></h1>
+  <% if current_user.admin? %>
+    <%= link_to "Editar", edit_product_path(@product), class: "btn btn-secondary" %>
+  <% end %>
+</div>
+<div class="card">
+  <div class="detail-grid">
+    <div class="detail-item">
+      <p class="detail-item__label">Categoria</p>
+      <p class="detail-item__value"><%= @product.category.name %></p>
+    </div>
+    <div class="detail-item">
+      <p class="detail-item__label">Preço</p>
+      <p class="detail-item__value"><%= number_to_currency(@product.price, unit: "R$", separator: ",", delimiter: ".") %></p>
+    </div>
+    <div class="detail-item">
+      <p class="detail-item__label">Estoque</p>
+      <p class="detail-item__value <%= "text-danger" if @product.low_stock? %>">
+        <%= @product.stock %>
+        <% if @product.low_stock? %><span class="text-muted">(abaixo do mínimo: <%= @product.low_stock_threshold %>)</span><% end %>
+      </p>
+    </div>
+    <div class="detail-item">
+      <p class="detail-item__label">Status</p>
+      <p class="detail-item__value">
+        <span class="badge <%= @product.active? ? "badge--ready" : "badge--cancelled" %>">
+          <%= @product.active? ? "Ativo" : "Inativo" %>
+        </span>
+      </p>
+    </div>
+    <% if @product.description.present? %>
+      <div class="detail-item" style="grid-column: 1 / -1">
+        <p class="detail-item__label">Descrição</p>
+        <p class="detail-item__value"><%= @product.description %></p>
+      </div>
+    <% end %>
+  </div>
+</div>
+<div style="margin-top:.75rem"><%= link_to "← Produtos", products_path, class: "btn btn-link" %></div>

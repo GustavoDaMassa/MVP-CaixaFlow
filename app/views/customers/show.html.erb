@@ -1,1 +1,30 @@
-<h1><%= @customer.name %></h1>
+<% content_for :title, @customer.name %>
+<div class="page-header">
+  <h1 class="page-title"><%= @customer.name %></h1>
+  <%= link_to "Editar", edit_customer_path(@customer), class: "btn btn-secondary" %>
+</div>
+<div class="card">
+  <div class="detail-grid">
+    <div class="detail-item">
+      <p class="detail-item__label">Telefone</p>
+      <p class="detail-item__value"><%= @customer.phone.presence || "—" %></p>
+    </div>
+    <div class="detail-item">
+      <p class="detail-item__label">E-mail</p>
+      <p class="detail-item__value"><%= @customer.email.presence || "—" %></p>
+    </div>
+    <% if @customer.address.present? %>
+      <div class="detail-item">
+        <p class="detail-item__label">Endereço</p>
+        <p class="detail-item__value"><%= @customer.address %></p>
+      </div>
+    <% end %>
+    <% if @customer.notes.present? %>
+      <div class="detail-item" style="grid-column: 1 / -1">
+        <p class="detail-item__label">Observações</p>
+        <p class="detail-item__value"><%= @customer.notes %></p>
+      </div>
+    <% end %>
+  </div>
+</div>
+<div style="margin-top:.75rem"><%= link_to "← Clientes", customers_path, class: "btn btn-link" %></div>

@@ -1,10 +1,39 @@
 <%= form_with model: product do |f| %>
-  <%= f.label :name %><%= f.text_field :name %>
-  <%= f.label :description %><%= f.text_area :description %>
-  <%= f.label :price %><%= f.number_field :price, step: 0.01 %>
-  <%= f.label :stock %><%= f.number_field :stock %>
-  <%= f.label :low_stock_threshold %><%= f.number_field :low_stock_threshold %>
-  <%= f.label :category_id %><%= f.collection_select :category_id, @categories, :id, :name, prompt: "Selecione" %>
-  <%= f.label :active %><%= f.check_box :active %>
-  <%= f.submit %>
+  <%= render "shared/errors", object: product %>
+  <div class="form-section">
+    <div class="form-group">
+      <%= f.label :name, "Nome" %>
+      <%= f.text_field :name, class: "form-control", autofocus: true %>
+    </div>
+    <div class="form-group">
+      <%= f.label :description, "Descrição" %>
+      <%= f.text_area :description, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :category_id, "Categoria" %>
+      <%= f.collection_select :category_id, @categories, :id, :name,
+            { prompt: "Selecione..." }, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :price, "Preço (R$)" %>
+      <%= f.number_field :price, step: "0.01", min: "0.01", class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :stock, "Estoque atual" %>
+      <%= f.number_field :stock, min: 0, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :low_stock_threshold, "Estoque mínimo (alerta)" %>
+      <%= f.number_field :low_stock_threshold, min: 0, class: "form-control" %>
+      <p class="form-hint">Alerta enviado quando o estoque cair abaixo deste valor.</p>
+    </div>
+    <div class="form-group form-check">
+      <%= f.check_box :active %>
+      <%= f.label :active, "Produto ativo" %>
+    </div>
+    <div class="form-actions">
+      <%= f.submit product.persisted? ? "Salvar alterações" : "Criar produto", class: "btn btn-primary" %>
+      <%= link_to "Cancelar", products_path, class: "btn btn-secondary" %>
+    </div>
+  </div>
 <% end %>

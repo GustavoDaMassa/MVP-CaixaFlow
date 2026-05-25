@@ -1,3 +1,49 @@
-<h1>Clientes</h1>
-<% @customers.each do |c| %><p><%= c.name %></p><% end %>
-<%= paginate @customers %>
+<% content_for :title, "Clientes" %>
+
+<div class="page-header">
+  <h1 class="page-title">Clientes</h1>
+  <%= link_to "Novo cliente", new_customer_path, class: "btn btn-primary" %>
+</div>
+
+<div class="card">
+  <div class="filter-bar">
+    <%= search_form_for @q, html: { style: "display:contents" } do |f| %>
+      <div class="form-group">
+        <%= f.label :name_or_phone_or_email_cont, "Busca" %>
+        <%= f.text_field :name_or_phone_or_email_cont, class: "form-control", placeholder: "Nome, telefone ou e-mail..." %>
+      </div>
+      <%= f.submit "Buscar", class: "btn btn-secondary" %>
+      <%= link_to "Limpar", customers_path, class: "btn btn-link" %>
+    <% end %>
+  </div>
+
+  <% if @customers.empty? %>
+    <div class="empty-state"><p>Nenhum cliente encontrado.</p></div>
+  <% else %>
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Telefone</th>
+            <th>E-mail</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @customers.each do |customer| %>
+            <tr>
+              <td><%= link_to customer.name, customer_path(customer) %></td>
+              <td class="text-muted"><%= customer.phone.presence || "—" %></td>
+              <td class="text-muted"><%= customer.email.presence || "—" %></td>
+              <td class="actions">
+                <%= link_to "Editar", edit_customer_path(customer), class: "btn btn-sm btn-secondary" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination-wrapper"><%= paginate @customers %></div>
+  <% end %>
+</div>

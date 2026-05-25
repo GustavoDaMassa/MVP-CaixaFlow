@@ -1,11 +1,59 @@
-<%= form_with model: order do |f| %>
-  <%= f.collection_select :customer_id, @customers, :id, :name, { include_blank: "Venda de balcão" } %>
-  <%= f.text_area :notes %>
-  <%= f.datetime_local_field :scheduled_for %>
-  <%= f.fields_for :order_items do |item_f| %>
-    <%= item_f.collection_select :product_id, @products, :id, :name %>
-    <%= item_f.number_field :quantity, min: 1, value: 1 %>
-    <%= item_f.hidden_field :unit_price %>
-  <% end %>
-  <%= f.submit %>
+<%= form_with model: order, id: "order-form" do |f| %>
+  <%= render "shared/errors", object: order %>
+
+  <div class="form-section" style="max-width:none;margin-bottom:1.25rem">
+    <div class="form-group">
+      <%= f.label :customer_id, "Cliente" %>
+      <%= f.collection_select :customer_id, @customers, :id, :name,
+            { include_blank: "Venda de balcão (sem cadastro)" }, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :scheduled_for, "Agendamento" %>
+      <%= f.datetime_local_field :scheduled_for, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :notes, "Observações" %>
+      <%= f.text_area :notes, class: "form-control", rows: 2 %>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:1.25rem">
+    <div class="order-items-header">
+      <span>Produto</span><span>Qtd.</span><span></span><span class="text-right">Subtotal</span><span></span>
+    </div>
+    <div id="order-items">
+      <%= f.fields_for :order_items do |item_f| %>
+        <%= render "order_item_fields", item_f: item_f %>
+      <% end %>
+    </div>
+    <div style="padding:.75rem 1rem;border-top:1px solid var(--border)">
+      <button type="button" id="add-item" class="btn btn-secondary btn-sm">+ Adicionar item</button>
+    </div>
+    <div class="order-total-row">
+      Total: <strong id="order-total-display">R$ 0,00</strong>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit order.persisted? ? "Salvar alterações" : "Criar pedido", class: "btn btn-primary" %>
+    <%= link_to "Cancelar", order.persisted? ? order_path(order) : orders_path, class: "btn btn-secondary" %>
+  </div>
+
+  <template id="order-item-template">
+    <div class="order-item" data-order-item>
+      <select name="order[order_items_attributes][TPLINDEX][product_id]" class="form-control" data-price-select>
+        <option value="">Selecione o produto</option>
+        <% @products.each do |p| %>
+          <option value="<%= p.id %>" data-price="<%= p.price %>">
+            <%= p.name %> — <%= number_to_currency(p.price, unit: "R$", separator: ",", delimiter: ".") %>
+          </option>
+        <% end %>
+      </select>
+      <input type="number" name="order[order_items_attributes][TPLINDEX][quantity]" class="form-control" value="1" min="1" data-quantity>
+      <input type="hidden" name="order[order_items_attributes][TPLINDEX][unit_price]" data-unit-price>
+      <span class="item-subtotal" data-subtotal>R$ 0,00</span>
+      <button type="button" class="btn btn-sm btn-danger" data-remove-item title="Remover">×</button>
+      <input type="hidden" name="order[order_items_attributes][TPLINDEX][_destroy]" value="false" data-destroy>
+    </div>
+  </template>
 <% end %>

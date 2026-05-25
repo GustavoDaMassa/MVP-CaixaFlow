@@ -1,0 +1,32 @@
+pt-BR:
+  date:
+    formats:
+      default: "%d/%m/%Y"
+      short:   "%d/%m"
+      long:    "%d de %B de %Y"
+    month_names:
+      - ~
+      - janeiro
+      - fevereiro
+      - março
+      - abril
+      - maio
+      - junho
+      - julho
+      - agosto
+      - setembro
+      - outubro
+      - novembro
+      - dezembro
+  time:
+    formats:
+      default: "%d/%m/%Y %H:%M"
+      short:   "%d/%m %H:%M"
+      long:    "%d de %B de %Y às %H:%M"
+  number:
+    currency:
+      format:
+        unit:      "R$"
+        separator: ","
+        delimiter: "."
+        precision: 2

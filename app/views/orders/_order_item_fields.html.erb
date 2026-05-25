@@ -1,0 +1,28 @@
+<div class="order-item" data-order-item <%= "data-persisted" if item_f.object.persisted? %>>
+  <select name="<%= item_f.object_name %>[product_id]"
+          id="<%= item_f.object_name.gsub(/[\[\]]/, "_").gsub(/_+$/, "") %>_product_id"
+          class="form-control" data-price-select>
+    <option value="">Selecione o produto</option>
+    <% @products.each do |p| %>
+      <option value="<%= p.id %>"
+              data-price="<%= p.price %>"
+              <%= "selected" if item_f.object.product_id == p.id %>>
+        <%= p.name %> — <%= number_to_currency(p.price, unit: "R$", separator: ",", delimiter: ".") %>
+      </option>
+    <% end %>
+  </select>
+
+  <%= item_f.number_field :quantity, min: 1, value: [item_f.object.quantity || 1, 1].max,
+        class: "form-control", data: { quantity: true } %>
+
+  <%= item_f.hidden_field :unit_price, data: { unit_price: true } %>
+
+  <span class="item-subtotal" data-subtotal>
+    <%= number_to_currency((item_f.object.quantity || 1) * (item_f.object.unit_price || 0),
+          unit: "R$", separator: ",", delimiter: ".") %>
+  </span>
+
+  <button type="button" class="btn btn-sm btn-danger" data-remove-item title="Remover">×</button>
+
+  <%= item_f.hidden_field :_destroy, value: false, data: { destroy: true } %>
+</div>

@@ -1,3 +1,82 @@
-<h1>Pedido #<%= @order.id %></h1>
-<p>Status: <%= @order.status %></p>
-<p>Total: R$ <%= @order.total %></p>
+<% content_for :title, "Pedido ##{@order.id}" %>
+
+<div class="page-header">
+  <h1 class="page-title">Pedido #<%= @order.id %></h1>
+  <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+    <%= link_to "Editar", edit_order_path(@order), class: "btn btn-secondary" %>
+    <%= button_to "Cancelar pedido", order_path(@order), method: :delete,
+          data: { turbo_confirm: "Cancelar este pedido?" },
+          class: "btn btn-danger",
+          disabled: @order.cancelled? || @order.delivered? %>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:1rem">
+  <div class="status-bar">
+    <strong>Status:</strong>
+    <span class="badge badge--<%= @order.status %>"><%= @order.status.humanize %></span>
+    <% unless @order.cancelled? || @order.delivered? %>
+      <%= form_with url: update_status_order_path(@order), method: :patch, style: "display:contents" do |f| %>
+        <% next_statuses = { "pending" => "preparing", "preparing" => "ready", "ready" => "delivered" } %>
+        <% if (next = next_statuses[@order.status]) %>
+          <%= f.hidden_field :order, value: nil %>
+          <input type="hidden" name="order[status]" value="<%= next %>">
+          <%= f.submit "→ #{next.humanize}", class: "btn btn-sm btn-primary" %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="detail-grid">
+    <div class="detail-item">
+      <p class="detail-item__label">Cliente</p>
+      <p class="detail-item__value">
+        <% if @order.customer %>
+          <%= link_to @order.customer.name, customer_path(@order.customer) %>
+        <% else %>
+          Balcão
+        <% end %>
+      </p>
+    </div>
+    <div class="detail-item">
+      <p class="detail-item__label">Atendente</p>
+      <p class="detail-item__value"><%= @order.user.name %></p>
+    </div>
+    <div class="detail-item">
+      <p class="detail-item__label">Data</p>
+      <p class="detail-item__value"><%= l @order.created_at, format: :long %></p>
+    </div>
+    <% if @order.scheduled_for.present? %>
+      <div class="detail-item">
+        <p class="detail-item__label">Agendamento</p>
+        <p class="detail-item__value"><%= l @order.scheduled_for, format: :long %></p>
+      </div>
+    <% end %>
+    <% if @order.notes.present? %>
+      <div class="detail-item" style="grid-column:1/-1">
+        <p class="detail-item__label">Observações</p>
+        <p class="detail-item__value"><%= @order.notes %></p>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:1rem">
+  <div class="order-items-header">
+    <span>Produto</span><span>Qtd.</span><span class="text-right">Preço unit.</span><span class="text-right">Subtotal</span><span></span>
+  </div>
+  <% @order.order_items.each do |item| %>
+    <div class="order-item">
+      <span><%= item.product&.name || "Produto removido" %></span>
+      <span><%= item.quantity %></span>
+      <span class="text-right text-muted"><%= number_to_currency(item.unit_price, unit: "R$", separator: ",", delimiter: ".") %></span>
+      <span class="item-subtotal"><%= number_to_currency(item.quantity * item.unit_price, unit: "R$", separator: ",", delimiter: ".") %></span>
+      <span></span>
+    </div>
+  <% end %>
+  <div class="order-total-row">
+    Total: <strong><%= number_to_currency(@order.total, unit: "R$", separator: ",", delimiter: ".") %></strong>
+  </div>
+</div>
+
+<%= link_to "← Pedidos", orders_path, class: "btn btn-link" %>

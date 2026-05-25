@@ -162,6 +162,9 @@ table.table { width: 100%; border-collapse: collapse; font-size: .9rem; }
 .text-right,
 .table th.text-right,
 .table td.text-right { text-align: right; }
+.text-left,
+.table th.text-left,
+.table td.text-left { text-align: left; }
 .text-muted  { color: var(--text-muted); }
 
 /* --- Badges ----------------------------------------------- */

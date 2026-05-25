@@ -18,7 +18,6 @@ RSpec.describe Product, type: :model do
       product = build(:product)
       expect(product.active).to be true
     end
-
   end
 
   describe "Category association" do

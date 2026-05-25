@@ -1,0 +1,39 @@
+<%= form_with model: [:admin, user], data: { turbo: false } do |f| %>
+  <%= render "shared/errors", object: user %>
+
+  <div class="form-group">
+    <%= f.label :name, "Nome" %>
+    <%= f.text_field :name, class: "form-control", autofocus: true %>
+  </div>
+  <div class="form-group">
+    <%= f.label :email, "E-mail" %>
+    <%= f.email_field :email, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :role, "Perfil" %>
+    <%= f.select :role, User.roles.keys.map { |r| [r.humanize, r] }, {}, class: "form-control" %>
+  </div>
+  <div class="form-group form-check">
+    <%= f.check_box :active %>
+    <%= f.label :active, "Ativo" %>
+  </div>
+
+  <hr style="margin:1.25rem 0;border-color:var(--border)">
+  <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:.75rem">
+    <%= user.persisted? ? "Deixe em branco para não alterar a senha." : "Defina uma senha inicial." %>
+  </p>
+
+  <div class="form-group">
+    <%= f.label :password, "Senha" %>
+    <%= f.password_field :password, class: "form-control", autocomplete: "new-password" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :password_confirmation, "Confirmação de senha" %>
+    <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password" %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit user.persisted? ? "Salvar alterações" : "Criar usuário", class: "btn btn-primary" %>
+    <%= link_to "Cancelar", admin_users_path, class: "btn btn-secondary" %>
+  </div>
+<% end %>

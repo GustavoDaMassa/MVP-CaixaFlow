@@ -1,0 +1,8 @@
+Olá, <%= @order.customer.name %>!
+
+Seu pedido #<%= @order.id %> está pronto para retirada.
+<% if @order.notes.present? %>
+Observações: <%= @order.notes %>
+<% end %>
+
+Obrigado pela preferência!

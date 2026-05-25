@@ -1,3 +1,72 @@
-<h1>Pedido #<%= @order.id %></h1>
-<p>Status: <%= @order.status %></p>
-<p>Total: R$ <%= @order.total %></p>
+<% content_for :title, "Pedido ##{@order.id}" %>
+
+<div class="page-header">
+  <h1 class="page-title">Pedido #<%= @order.id %></h1>
+  <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+    <%= link_to "Editar", edit_order_path(@order), class: "btn btn-secondary" %>
+    <%= button_to "Remover pedido", order_path(@order), method: :delete,
+          data: { turbo_confirm: "Remover este pedido?" },
+          class: "btn btn-danger" %>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:1rem">
+  <div class="detail-grid">
+    <div class="detail-item">
+      <p class="detail-item__label">Cliente</p>
+      <p class="detail-item__value">
+        <% if @order.customer %>
+          <%= link_to @order.customer.name, customer_path(@order.customer) %>
+        <% else %>
+          Balcão
+        <% end %>
+      </p>
+    </div>
+    <div class="detail-item">
+      <p class="detail-item__label">Atendente</p>
+      <p class="detail-item__value"><%= @order.user.name %></p>
+    </div>
+    <div class="detail-item">
+      <p class="detail-item__label">Pagamento</p>
+      <p class="detail-item__value"><%= Order::PAYMENT_LABELS[@order.payment_method] %></p>
+    </div>
+    <div class="detail-item">
+      <p class="detail-item__label">Data</p>
+      <p class="detail-item__value"><%= l @order.created_at, format: :long %></p>
+    </div>
+    <% if @order.scheduled_for.present? %>
+      <div class="detail-item">
+        <p class="detail-item__label">Agendamento</p>
+        <p class="detail-item__value"><%= l @order.scheduled_for, format: :long %></p>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:1rem">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Produto</th>
+        <th>Qtd.</th>
+        <th>Preço unit.</th>
+        <th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @order.order_items.each do |item| %>
+        <tr>
+          <td><%= item.product&.name || "Produto removido" %></td>
+          <td><%= item.quantity %></td>
+          <td class="text-muted"><%= number_to_currency(item.unit_price, unit: "R$", separator: ",", delimiter: ".") %></td>
+          <td><strong><%= number_to_currency(item.quantity * item.unit_price, unit: "R$", separator: ",", delimiter: ".") %></strong></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="order-total-row">
+    Total: <strong><%= number_to_currency(@order.total, unit: "R$", separator: ",", delimiter: ".") %></strong>
+  </div>
+</div>
+
+<%= link_to "← Pedidos", orders_path, class: "btn btn-link" %>

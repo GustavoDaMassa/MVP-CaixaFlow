@@ -1,5 +1,6 @@
 class OrdersController < ApplicationController
-  before_action :set_order, only: %i[show edit update destroy update_status]
+  before_action :set_order, only: %i[show edit update destroy]
+  before_action :require_open_cash, only: %i[new create]
 
   def index
     @q = scoped_orders.ransack(params[:q])
@@ -13,7 +14,6 @@ class OrdersController < ApplicationController
 
   def new
     @order = Order.new
-    @order.order_items.build
     @products = Product.where(active: true).order(:name)
     @customers = Customer.order(:name)
   end
@@ -24,7 +24,6 @@ class OrdersController < ApplicationController
     @order.total = OrderTotalCalculator.call(@order)
 
     if @order.save
-      StockManager.decrement(@order)
       redirect_to order_path(@order), notice: "Pedido criado."
     else
       @products = Product.where(active: true).order(:name)
@@ -50,19 +49,8 @@ class OrdersController < ApplicationController
   end
 
   def destroy
-    @order.update!(status: :cancelled)
-    StockManager.restore(@order)
-    redirect_to orders_path, notice: "Pedido cancelado."
-  end
-
-  def update_status
-    previous_status = @order.status
-    if @order.update(status: params[:order][:status])
-      handle_status_change(previous_status)
-      redirect_to order_path(@order), notice: "Status atualizado."
-    else
-      redirect_to order_path(@order), alert: "Não foi possível atualizar o status."
-    end
+    @order.destroy
+    redirect_to orders_path, notice: "Pedido removido."
   end
 
   private
@@ -73,23 +61,20 @@ class OrdersController < ApplicationController
     redirect_to orders_path, alert: "Pedido não encontrado."
   end
 
+  def require_open_cash
+    unless CashRegister.current
+      redirect_to cash_registers_path, alert: "Abra o caixa antes de registrar pedidos."
+    end
+  end
+
   def scoped_orders
     current_user.admin? ? Order.all : Order.where(user: current_user)
   end
 
   def order_params
     params.require(:order).permit(
-      :customer_id, :notes, :scheduled_for,
+      :customer_id, :scheduled_for, :payment_method,
       order_items_attributes: %i[id product_id quantity unit_price _destroy]
     )
-  end
-
-  def handle_status_change(previous_status)
-    if @order.cancelled? && previous_status != "cancelled"
-      StockManager.restore(@order)
-    end
-    if @order.ready? && @order.customer&.email.present?
-      OrderReadyMailJob.perform_later(@order.id)
-    end
   end
 end

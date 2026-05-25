@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, skip: :registrations
 
   namespace :admin do
     root to: "dashboard#index"
@@ -7,11 +7,13 @@ Rails.application.routes.draw do
   end
 
   resources :categories
-  resources :customers, only: %i[index show new create edit update]
+  resources :customers
   resources :products
-  resources :orders do
-    member { patch :update_status }
+  resources :cash_registers, only: %i[index show new create] do
+    member { patch :close }
   end
+
+  resources :orders
 
   get "up" => "rails/health#show", as: :rails_health_check
 

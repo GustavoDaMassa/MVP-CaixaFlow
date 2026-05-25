@@ -1,0 +1,67 @@
+<% content_for :title, "Caixa" %>
+
+<div class="page-header">
+  <h1 class="page-title">Caixa</h1>
+  <% unless @current %>
+    <%= link_to "Abrir caixa", new_cash_register_path, class: "btn btn-primary" %>
+  <% end %>
+</div>
+
+<% if @current %>
+  <div class="card card-body" style="margin-bottom:1rem;border-left:4px solid var(--success)">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem">
+      <div>
+        <p style="font-weight:600;color:var(--success);margin-bottom:.25rem">Caixa aberto</p>
+        <p style="font-size:.9rem;color:var(--text-muted)">
+          Aberto às <%= l @current.opened_at, format: :short %> por <%= @current.user.name %>
+          &middot; Faturamento: <strong><%= number_to_currency(@current.total_sales, unit: "R$", separator: ",", delimiter: ".") %></strong>
+        </p>
+      </div>
+      <%= link_to "Ver detalhes / Fechar", cash_register_path(@current), class: "btn btn-secondary btn-sm" %>
+    </div>
+  </div>
+<% end %>
+
+<div class="card">
+  <% if @cash_registers.empty? %>
+    <div class="empty-state"><p>Nenhum caixa registrado ainda.</p></div>
+  <% else %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Abertura</th>
+          <th>Fechamento</th>
+          <th>Operador</th>
+          <th>Valor inicial</th>
+          <th>Faturamento</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @cash_registers.each do |cr| %>
+          <tr>
+            <td><%= cr.id %></td>
+            <td><%= l cr.opened_at, format: :short %></td>
+            <td><%= cr.closed_at ? l(cr.closed_at, format: :short) : "—" %></td>
+            <td class="text-muted"><%= cr.user.name %></td>
+            <td><%= number_to_currency(cr.opening_amount, unit: "R$", separator: ",", delimiter: ".") %></td>
+            <td><%= number_to_currency(cr.total_sales, unit: "R$", separator: ",", delimiter: ".") %></td>
+            <td>
+              <% if cr.open? %>
+                <span class="badge badge--ready">Aberto</span>
+              <% else %>
+                <span class="badge badge--cancelled">Fechado</span>
+              <% end %>
+            </td>
+            <td class="actions">
+              <%= link_to "Ver", cash_register_path(cr), class: "btn btn-sm btn-secondary" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <div class="pagination-wrapper"><%= paginate @cash_registers %></div>
+  <% end %>
+</div>

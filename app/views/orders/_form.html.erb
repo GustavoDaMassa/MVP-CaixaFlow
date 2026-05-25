@@ -1,11 +1,77 @@
-<%= form_with model: order do |f| %>
-  <%= f.collection_select :customer_id, @customers, :id, :name, { include_blank: "Venda de balcão" } %>
-  <%= f.text_area :notes %>
-  <%= f.datetime_local_field :scheduled_for %>
-  <%= f.fields_for :order_items do |item_f| %>
-    <%= item_f.collection_select :product_id, @products, :id, :name %>
-    <%= item_f.number_field :quantity, min: 1, value: 1 %>
-    <%= item_f.hidden_field :unit_price %>
-  <% end %>
-  <%= f.submit %>
+<%= form_with model: order, id: "order-form" do |f| %>
+  <%= render "shared/errors", object: order %>
+
+  <div class="pos-layout">
+    <!-- catálogo -->
+    <div class="pos-catalog card">
+      <div style="padding:.75rem 1rem;border-bottom:1px solid var(--border)">
+        <input type="search" id="pos-search" class="form-control"
+               placeholder="Buscar produto..." style="margin-bottom:.5rem">
+        <div class="pos-tabs">
+          <button type="button" class="pos-tab active" data-category="">Todos</button>
+          <% Category.order(:name).each do |cat| %>
+            <button type="button" class="pos-tab" data-category="<%= cat.id %>"><%= cat.name %></button>
+          <% end %>
+        </div>
+      </div>
+      <div class="pos-products" id="pos-products">
+        <% @products.each do |p| %>
+          <button type="button" class="pos-product-card"
+                  data-product-id="<%= p.id %>"
+                  data-product-name="<%= p.name %>"
+                  data-product-price="<%= p.price %>"
+                  data-category="<%= p.category_id %>">
+            <span class="pos-card__name"><%= p.name %></span>
+            <span class="pos-card__price"><%= number_to_currency(p.price, unit: "R$", separator: ",", delimiter: ".") %></span>
+          </button>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- pedido -->
+    <div class="pos-order">
+      <div class="card card-body" style="margin-bottom:.75rem">
+        <div class="form-group">
+          <%= f.label :customer_id, "Cliente" %>
+          <%= f.collection_select :customer_id, @customers, :id, :name,
+                { include_blank: "Balcão (sem cadastro)" }, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :scheduled_for, "Agendamento" %>
+          <%= f.datetime_local_field :scheduled_for, class: "form-control" %>
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <p style="font-size:.82rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.5rem">Forma de pagamento</p>
+          <div class="payment-options">
+            <% Order.payment_methods.each_key do |method| %>
+              <label class="payment-option">
+                <%= f.radio_button :payment_method, method, class: "payment-radio" %>
+                <span><%= Order::PAYMENT_LABELS[method] %></span>
+              </label>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:.75rem">
+        <div style="padding:.6rem 1rem;border-bottom:1px solid var(--border);font-size:.78rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em">
+          Itens do pedido
+        </div>
+        <div id="cart-empty" class="cart-empty">Selecione produtos ao lado</div>
+        <div id="order-items">
+          <%= f.fields_for :order_items do |item_f| %>
+            <%= render "order_item_fields", item_f: item_f %>
+          <% end %>
+        </div>
+        <div class="order-total-row">
+          Total: <strong id="order-total-display">R$ 0,00</strong>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <%= f.submit order.persisted? ? "Salvar alterações" : "Criar pedido", class: "btn btn-primary" %>
+        <%= link_to "Cancelar", order.persisted? ? order_path(order) : orders_path, class: "btn btn-secondary" %>
+      </div>
+    </div>
+  </div>
 <% end %>

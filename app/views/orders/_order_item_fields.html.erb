@@ -1,0 +1,16 @@
+<div class="cart-item" data-order-item data-persisted data-product-id="<%= item_f.object.product_id %>">
+  <%= item_f.hidden_field :id %>
+  <%= item_f.hidden_field :product_id %>
+  <%= item_f.hidden_field :unit_price, data: { unit_price: true } %>
+  <%= item_f.hidden_field :_destroy, value: false, data: { destroy: true } %>
+
+  <span class="cart-item__name"><%= item_f.object.product&.name || "Produto removido" %></span>
+  <div class="cart-item__controls">
+    <button type="button" class="qty-btn" data-qty-dec>−</button>
+    <%= item_f.number_field :quantity, class: "qty-input", min: 1,
+          value: [item_f.object.quantity || 1, 1].max, data: { quantity: true } %>
+    <button type="button" class="qty-btn" data-qty-inc>+</button>
+  </div>
+  <span class="cart-item__subtotal" data-subtotal></span>
+  <button type="button" class="btn-icon" data-remove-item title="Remover">×</button>
+</div>

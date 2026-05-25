@@ -1,10 +1,64 @@
-<h1>Produtos</h1>
-<%= search_form_for @q do |f| %>
-  <%= f.label :name_cont, "Nome" %>
-  <%= f.text_field :name_cont %>
-  <%= f.submit "Buscar" %>
-<% end %>
-<% @products.each do |product| %>
-  <p><%= product.name %> — R$ <%= product.price %></p>
-<% end %>
-<%= paginate @products %>
+<% content_for :title, "Produtos" %>
+
+<div class="page-header">
+  <h1 class="page-title">Produtos</h1>
+  <% if current_user.admin? %>
+    <%= link_to "Novo produto", new_product_path, class: "btn btn-primary" %>
+  <% end %>
+</div>
+
+<div class="card">
+  <div class="filter-bar">
+    <%= search_form_for @q, html: { style: "display:contents" } do |f| %>
+      <div class="form-group">
+        <%= f.label :name_cont, "Nome" %>
+        <%= f.text_field :name_cont, class: "form-control", placeholder: "Buscar..." %>
+      </div>
+      <div class="form-group">
+        <%= f.label :category_id_eq, "Categoria" %>
+        <%= f.collection_select :category_id_eq, Category.order(:name), :id, :name,
+              { include_blank: "Todas" }, class: "form-control" %>
+      </div>
+      <%= f.submit "Buscar", class: "btn btn-secondary" %>
+      <%= link_to "Limpar", products_path, class: "btn btn-link" %>
+    <% end %>
+  </div>
+
+  <% if @products.empty? %>
+    <div class="empty-state"><p>Nenhum produto encontrado.</p></div>
+  <% else %>
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Categoria</th>
+            <th>Preço</th>
+            <th>Status</th>
+            <% if current_user.admin? %><th></th><% end %>
+          </tr>
+        </thead>
+        <tbody>
+          <% @products.each do |product| %>
+            <tr>
+              <td><%= link_to product.name, product_path(product) %></td>
+              <td class="text-muted"><%= product.category.name %></td>
+              <td><%= number_to_currency(product.price, unit: "R$", separator: ",", delimiter: ".") %></td>
+              <td>
+                <span class="badge <%= product.active? ? "badge--ready" : "badge--cancelled" %>">
+                  <%= product.active? ? "Ativo" : "Inativo" %>
+                </span>
+              </td>
+              <% if current_user.admin? %>
+                <td class="actions">
+                  <%= link_to "Editar", edit_product_path(product), class: "btn btn-sm btn-secondary" %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination-wrapper"><%= paginate @products %></div>
+  <% end %>
+</div>

@@ -1,0 +1,25 @@
+<% content_for :title, "Abrir caixa" %>
+
+<div class="page-header">
+  <h1 class="page-title">Abrir caixa</h1>
+</div>
+
+<div class="card card-body" style="max-width:420px">
+  <%= render "shared/errors", object: @cash_register %>
+
+  <%= form_with model: @cash_register, data: { turbo: false } do |f| %>
+    <div class="form-group">
+      <%= f.label :opening_amount, "Valor inicial em caixa (R$)" %>
+      <span class="form-hint">troco disponível para o turno</span>
+      <%= f.number_field :opening_amount, step: "0.01", min: "0", class: "form-control", autofocus: true %>
+    </div>
+    <div class="form-group">
+      <%= f.label :notes, "Observações" %>
+      <%= f.text_area :notes, class: "form-control", rows: 2 %>
+    </div>
+    <div class="form-actions">
+      <%= f.submit "Abrir caixa", class: "btn btn-primary" %>
+      <%= link_to "Cancelar", cash_registers_path, class: "btn btn-secondary" %>
+    </div>
+  <% end %>
+</div>

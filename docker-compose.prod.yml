@@ -1,0 +1,69 @@
+services:
+  caixaflow-nginx:
+    image: nginx:alpine
+    ports:
+      - "8084:80"
+    volumes:
+      - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - caixaflow
+    restart: unless-stopped
+
+  caixaflow:
+    image: gustavodamassa/caixaflow:latest
+    env_file: .env
+    environment:
+      RAILS_ENV: production
+      DB_HOST: caixaflow-db
+      DB_PORT: "5432"
+      DB_USERNAME: caixaflow
+      REDIS_URL: redis://caixaflow-redis:6379/0
+    depends_on:
+      - caixaflow-db
+      - caixaflow-redis
+    volumes:
+      - caixaflow_storage:/rails/storage
+    restart: unless-stopped
+
+  caixaflow-sidekiq:
+    image: gustavodamassa/caixaflow:latest
+    command: bundle exec sidekiq
+    env_file: .env
+    environment:
+      RAILS_ENV: production
+      DB_HOST: caixaflow-db
+      DB_PORT: "5432"
+      DB_USERNAME: caixaflow
+      REDIS_URL: redis://caixaflow-redis:6379/0
+    depends_on:
+      - caixaflow-db
+      - caixaflow-redis
+    restart: unless-stopped
+
+  caixaflow-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: caixaflow
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: caixaflow_production
+    volumes:
+      - caixaflow_db_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  caixaflow-redis:
+    image: redis:7-alpine
+    volumes:
+      - caixaflow_redis_data:/data
+    restart: unless-stopped
+
+  caixaflow-watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: caixaflow caixaflow-sidekiq --interval 30 --cleanup
+    restart: unless-stopped
+
+volumes:
+  caixaflow_db_data:
+  caixaflow_redis_data:
+  caixaflow_storage:

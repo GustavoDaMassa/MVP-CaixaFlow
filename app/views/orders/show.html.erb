@@ -44,18 +44,26 @@
 </div>
 
 <div class="card" style="margin-bottom:1rem">
-  <div class="order-items-header">
-    <span>Produto</span><span>Qtd.</span><span>Preço unit.</span><span>Subtotal</span><span></span>
-  </div>
-  <% @order.order_items.each do |item| %>
-    <div class="order-item">
-      <span><%= item.product&.name || "Produto removido" %></span>
-      <span><%= item.quantity %></span>
-      <span class="text-muted"><%= number_to_currency(item.unit_price, unit: "R$", separator: ",", delimiter: ".") %></span>
-      <span class="item-subtotal"><%= number_to_currency(item.quantity * item.unit_price, unit: "R$", separator: ",", delimiter: ".") %></span>
-      <span></span>
-    </div>
-  <% end %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Produto</th>
+        <th>Qtd.</th>
+        <th>Preço unit.</th>
+        <th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @order.order_items.each do |item| %>
+        <tr>
+          <td><%= item.product&.name || "Produto removido" %></td>
+          <td><%= item.quantity %></td>
+          <td class="text-muted"><%= number_to_currency(item.unit_price, unit: "R$", separator: ",", delimiter: ".") %></td>
+          <td><strong><%= number_to_currency(item.quantity * item.unit_price, unit: "R$", separator: ",", delimiter: ".") %></strong></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
   <div class="order-total-row">
     Total: <strong><%= number_to_currency(@order.total, unit: "R$", separator: ",", delimiter: ".") %></strong>
   </div>

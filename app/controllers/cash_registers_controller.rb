@@ -1,5 +1,4 @@
 class CashRegistersController < ApplicationController
-  before_action :require_admin, only: %i[destroy]
   before_action :set_cash_register, only: %i[show close]
 
   def index

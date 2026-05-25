@@ -14,7 +14,6 @@ class OrdersController < ApplicationController
 
   def new
     @order = Order.new
-    @order.order_items.build
     @products = Product.where(active: true).order(:name)
     @customers = Customer.order(:name)
   end

@@ -13,7 +13,8 @@ class Order < ApplicationRecord
     "credit_card" => "Cartão Crédito"
   }.freeze
 
-  accepts_nested_attributes_for :order_items, allow_destroy: true, reject_if: :all_blank
+  accepts_nested_attributes_for :order_items, allow_destroy: true,
+    reject_if: ->(attrs) { attrs["product_id"].blank? }
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[created_at scheduled_for customer_id user_id payment_method]

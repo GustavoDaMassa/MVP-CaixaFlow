@@ -40,6 +40,7 @@ pt-BR:
       too_long:           "é muito longo (máximo: %{count} caracteres)"
       taken:              "já está em uso"
       not_a_number:       "não é um número"
+      required:           "é obrigatório"
       greater_than:       "deve ser maior que %{count}"
       greater_than_or_equal_to: "deve ser maior ou igual a %{count}"
       less_than:          "deve ser menor que %{count}"
@@ -56,12 +57,20 @@ pt-BR:
         taken:        "já está em uso"
         invalid:      "não é válido"
         not_a_number: "não é um número"
+        required:     "é obrigatório"
       models:
         user:
           attributes:
             email:    { blank: "não pode ficar em branco", taken: "já está em uso" }
             password: { blank: "não pode ficar em branco", too_short: "é muito curta (mínimo: %{count} caracteres)" }
             name:     { blank: "não pode ficar em branco" }
+    models:
+      order:       "Pedido"
+      order_item:  "Item do pedido"
+      customer:    "Cliente"
+      product:     "Produto"
+      category:    "Categoria"
+      user:        "Usuário"
     attributes:
       user:
         name:                  "Nome"
@@ -69,6 +78,10 @@ pt-BR:
         password:              "Senha"
         password_confirmation: "Confirmação de senha"
         current_password:      "Senha atual"
+      order_item:
+        product:    "Produto"
+        quantity:   "Quantidade"
+        unit_price: "Preço unitário"
 
   devise:
     sessions:

@@ -30,3 +30,83 @@ pt-BR:
         separator: ","
         delimiter: "."
         precision: 2
+
+  errors:
+    messages:
+      blank:              "não pode ficar em branco"
+      empty:              "não pode ficar vazio"
+      invalid:            "não é válido"
+      too_short:          "é muito curto (mínimo: %{count} caracteres)"
+      too_long:           "é muito longo (máximo: %{count} caracteres)"
+      taken:              "já está em uso"
+      not_a_number:       "não é um número"
+      greater_than:       "deve ser maior que %{count}"
+      greater_than_or_equal_to: "deve ser maior ou igual a %{count}"
+      less_than:          "deve ser menor que %{count}"
+      less_than_or_equal_to: "deve ser menor ou igual a %{count}"
+      not_saved:
+        one:   "Não foi possível salvar: 1 erro encontrado"
+        other: "Não foi possível salvar: %{count} erros encontrados"
+    format: "%{attribute} %{message}"
+
+  activerecord:
+    errors:
+      messages:
+        blank:        "não pode ficar em branco"
+        taken:        "já está em uso"
+        invalid:      "não é válido"
+        not_a_number: "não é um número"
+      models:
+        user:
+          attributes:
+            email:    { blank: "não pode ficar em branco", taken: "já está em uso" }
+            password: { blank: "não pode ficar em branco", too_short: "é muito curta (mínimo: %{count} caracteres)" }
+            name:     { blank: "não pode ficar em branco" }
+    attributes:
+      user:
+        name:                  "Nome"
+        email:                 "E-mail"
+        password:              "Senha"
+        password_confirmation: "Confirmação de senha"
+        current_password:      "Senha atual"
+
+  devise:
+    sessions:
+      signed_in:  "Login realizado com sucesso."
+      signed_out: "Você saiu com sucesso."
+    registrations:
+      signed_up:           "Cadastro realizado com sucesso."
+      signed_up_but_unconfirmed: "Cadastro realizado. Verifique seu e-mail para confirmar a conta."
+      update_needs_confirmation: "Conta atualizada. Verifique seu e-mail para confirmar o novo endereço."
+      updated:             "Conta atualizada com sucesso."
+      destroyed:           "Conta cancelada com sucesso."
+    passwords:
+      send_instructions:   "Você receberá um e-mail com instruções para redefinir sua senha."
+      updated:             "Sua senha foi alterada com sucesso."
+      updated_not_active:  "Sua senha foi alterada com sucesso."
+      send_paranoid_instructions: "Se o seu e-mail existir em nossa base, você receberá as instruções."
+    confirmations:
+      confirmed:           "Sua conta foi confirmada com sucesso."
+      send_instructions:   "Você receberá um e-mail com instruções de confirmação em breve."
+      send_paranoid_instructions: "Se o seu e-mail existir em nossa base, você receberá as instruções."
+    unlocks:
+      send_instructions:   "Você receberá um e-mail com instruções para desbloquear sua conta."
+      unlocked:            "Sua conta foi desbloqueada com sucesso."
+      send_paranoid_instructions: "Se a sua conta existir, você receberá um e-mail com instruções."
+    failure:
+      already_authenticated: "Você já está logado."
+      unauthenticated:       "Você precisa fazer login para continuar."
+      unconfirmed:           "Você precisa confirmar sua conta antes de continuar."
+      locked:                "Sua conta está bloqueada."
+      invalid:               "E-mail ou senha inválidos."
+      last_attempt:          "Mais uma tentativa antes de sua conta ser bloqueada."
+      timeout:               "Sua sessão expirou. Faça login novamente."
+      inactive:              "Sua conta ainda não está ativa."
+      not_found_in_database: "E-mail ou senha inválidos."
+    mailer:
+      confirmation_instructions:
+        subject: "Instruções de confirmação"
+      reset_password_instructions:
+        subject: "Instruções para redefinir senha"
+      unlock_instructions:
+        subject: "Instruções para desbloquear conta"

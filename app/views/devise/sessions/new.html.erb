@@ -1,0 +1,35 @@
+<% content_for :title, "Entrar" %>
+
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg)">
+  <div style="width:100%;max-width:380px;padding:1rem">
+    <div style="text-align:center;margin-bottom:2rem">
+      <h1 style="font-size:1.6rem;font-weight:700;color:var(--primary-dark)">CaixaFlow</h1>
+    </div>
+    <div class="card card-body">
+      <h2 style="font-size:1.1rem;font-weight:600;margin-bottom:1.25rem">Entrar</h2>
+
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name),
+                   html: { data: { turbo: false } }) do |f| %>
+        <div class="form-group">
+          <%= f.label :email, "E-mail" %>
+          <%= f.email_field :email, class: "form-control", autofocus: true, autocomplete: "email" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :password, "Senha" %>
+          <%= f.password_field :password, class: "form-control", autocomplete: "current-password" %>
+        </div>
+        <% if devise_mapping.rememberable? %>
+          <div class="form-group form-check" style="margin-bottom:1rem">
+            <%= f.check_box :remember_me %>
+            <%= f.label :remember_me, "Lembrar de mim" %>
+          </div>
+        <% end %>
+        <%= f.submit "Entrar", class: "btn btn-primary", style: "width:100%" %>
+      <% end %>
+
+      <div style="margin-top:1rem;font-size:.85rem;display:flex;flex-direction:column;gap:.4rem">
+        <%= render "devise/shared/links" %>
+      </div>
+    </div>
+  </div>
+</div>

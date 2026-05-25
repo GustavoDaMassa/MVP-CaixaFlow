@@ -4,14 +4,14 @@
 
 /* --- Variables -------------------------------------------- */
 :root {
-  --primary:        #c2760a;
-  --primary-dark:   #9a5e08;
-  --primary-light:  #fef3c7;
-  --bg:             #f8f5f0;
+  --primary:        #9b1c2e;
+  --primary-dark:   #7a1523;
+  --primary-light:  #fde8ec;
+  --bg:             #f9f5f5;
   --surface:        #ffffff;
-  --border:         #e2ddd6;
-  --text:           #1f1a14;
-  --text-muted:     #7a6f62;
+  --border:         #e4d8d8;
+  --text:           #1a1214;
+  --text-muted:     #7a6468;
   --danger:         #b91c1c;
   --danger-light:   #fee2e2;
   --success:        #15803d;

@@ -26,9 +26,6 @@ gem "sidekiq", "~> 7.0"
 gem "sidekiq-cron"
 gem "redis", "~> 5.0"
 
-# Cache
-gem "solid_cache"
-
 # Image processing (Active Storage)
 gem "image_processing", "~> 1.2"
 

@@ -46,6 +46,9 @@ Rails.application.configure do
   # Don't log any deprecations.
   config.active_support.report_deprecations = false
 
+  # Cache em memória (Redis já usado pelo Sidekiq)
+  config.cache_store = :memory_store
+
   # Background jobs via Sidekiq
   config.active_job.queue_adapter = :sidekiq
 

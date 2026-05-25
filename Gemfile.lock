@@ -372,10 +372,6 @@ GEM
       fugit (~> 1.8, >= 1.11.1)
       globalid (>= 1.0.1)
       sidekiq (>= 6.5.0)
-    solid_cache (1.0.10)
-      activejob (>= 7.2)
-      activerecord (>= 7.2)
-      railties (>= 7.2)
     sshkit (1.25.0)
       base64
       logger
@@ -452,7 +448,6 @@ DEPENDENCIES
   shoulda-matchers
   sidekiq (~> 7.0)
   sidekiq-cron
-  solid_cache
   stimulus-rails
   thruster
   turbo-rails

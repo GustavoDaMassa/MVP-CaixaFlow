@@ -7,6 +7,12 @@ class DashboardStats
     Order.where(created_at: Time.current.all_week).sum(:total)
   end
 
+  def revenue_by_payment_today
+    Order.where(created_at: Date.current.all_day)
+         .group(:payment_method)
+         .sum(:total)
+  end
+
   def recent_orders
     Order.includes(:customer, :user).order(created_at: :desc).limit(5)
   end

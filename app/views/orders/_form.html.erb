@@ -41,8 +41,15 @@
           <%= f.datetime_local_field :scheduled_for, class: "form-control" %>
         </div>
         <div class="form-group" style="margin-bottom:0">
-          <%= f.label :notes, "Observações" %>
-          <%= f.text_area :notes, class: "form-control", rows: 2 %>
+          <p style="font-size:.82rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.5rem">Forma de pagamento</p>
+          <div class="payment-options">
+            <% Order.payment_methods.each_key do |method| %>
+              <label class="payment-option">
+                <%= f.radio_button :payment_method, method, class: "payment-radio" %>
+                <span><%= Order::PAYMENT_LABELS[method] %></span>
+              </label>
+            <% end %>
+          </div>
         </div>
       </div>
 

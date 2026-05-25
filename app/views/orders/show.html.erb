@@ -27,6 +27,10 @@
       <p class="detail-item__value"><%= @order.user.name %></p>
     </div>
     <div class="detail-item">
+      <p class="detail-item__label">Pagamento</p>
+      <p class="detail-item__value"><%= Order::PAYMENT_LABELS[@order.payment_method] %></p>
+    </div>
+    <div class="detail-item">
       <p class="detail-item__label">Data</p>
       <p class="detail-item__value"><%= l @order.created_at, format: :long %></p>
     </div>
@@ -36,24 +40,18 @@
         <p class="detail-item__value"><%= l @order.scheduled_for, format: :long %></p>
       </div>
     <% end %>
-    <% if @order.notes.present? %>
-      <div class="detail-item" style="grid-column:1/-1">
-        <p class="detail-item__label">Observações</p>
-        <p class="detail-item__value"><%= @order.notes %></p>
-      </div>
-    <% end %>
   </div>
 </div>
 
 <div class="card" style="margin-bottom:1rem">
   <div class="order-items-header">
-    <span>Produto</span><span>Qtd.</span><span class="text-right">Preço unit.</span><span class="text-right">Subtotal</span><span></span>
+    <span>Produto</span><span>Qtd.</span><span>Preço unit.</span><span>Subtotal</span><span></span>
   </div>
   <% @order.order_items.each do |item| %>
     <div class="order-item">
       <span><%= item.product&.name || "Produto removido" %></span>
       <span><%= item.quantity %></span>
-      <span class="text-right text-muted"><%= number_to_currency(item.unit_price, unit: "R$", separator: ",", delimiter: ".") %></span>
+      <span class="text-muted"><%= number_to_currency(item.unit_price, unit: "R$", separator: ",", delimiter: ".") %></span>
       <span class="item-subtotal"><%= number_to_currency(item.quantity * item.unit_price, unit: "R$", separator: ",", delimiter: ".") %></span>
       <span></span>
     </div>

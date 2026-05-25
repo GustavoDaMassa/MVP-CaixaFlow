@@ -359,6 +359,29 @@ nav.pagination .gap { border: none; background: none; }
 .pos-card__price { font-size: .78rem; color: var(--primary); font-weight: 600; }
 .pos-order { position: sticky; top: calc(var(--nav-height) + 1.5rem); }
 
+/* --- Payment options -------------------------------------- */
+.payment-options { display: flex; gap: .5rem; flex-wrap: wrap; }
+.payment-option {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .4rem .85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: .85rem;
+  transition: background .12s, border-color .12s;
+  user-select: none;
+}
+.payment-option:hover { background: var(--primary-light); border-color: var(--primary); }
+.payment-radio { accent-color: var(--primary); }
+.payment-option:has(.payment-radio:checked) {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
 /* --- Cart items ------------------------------------------- */
 .cart-item {
   display: grid;

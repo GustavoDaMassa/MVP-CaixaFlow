@@ -74,7 +74,7 @@ class OrdersController < ApplicationController
 
   def order_params
     params.require(:order).permit(
-      :customer_id, :notes, :scheduled_for,
+      :customer_id, :scheduled_for, :payment_method,
       order_items_attributes: %i[id product_id quantity unit_price _destroy]
     )
   end

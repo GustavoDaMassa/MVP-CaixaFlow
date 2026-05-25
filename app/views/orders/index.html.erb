@@ -27,7 +27,7 @@
             <th>#</th>
             <th>Cliente</th>
             <% if current_user.admin? %><th>Atendente</th><% end %>
-            <th class="text-right">Total</th>
+            <th>Total</th>
             <th>Data</th>
             <th></th>
           </tr>
@@ -40,7 +40,7 @@
               <% if current_user.admin? %>
                 <td class="text-muted"><%= order.user.name %></td>
               <% end %>
-              <td class="text-right"><%= number_to_currency(order.total, unit: "R$", separator: ",", delimiter: ".") %></td>
+              <td><%= number_to_currency(order.total, unit: "R$", separator: ",", delimiter: ".") %></td>
               <td class="text-muted"><%= l order.created_at, format: :short %></td>
               <td class="actions">
                 <%= link_to "Ver", order_path(order), class: "btn btn-sm btn-secondary" %>

@@ -33,7 +33,7 @@
           <tr>
             <th>Nome</th>
             <th>Categoria</th>
-            <th class="text-right">Preço</th>
+            <th>Preço</th>
             <th>Status</th>
             <% if current_user.admin? %><th></th><% end %>
           </tr>
@@ -43,7 +43,7 @@
             <tr>
               <td><%= link_to product.name, product_path(product) %></td>
               <td class="text-muted"><%= product.category.name %></td>
-              <td class="text-right"><%= number_to_currency(product.price, unit: "R$", separator: ",", delimiter: ".") %></td>
+              <td><%= number_to_currency(product.price, unit: "R$", separator: ",", delimiter: ".") %></td>
               <td>
                 <span class="badge <%= product.active? ? "badge--ready" : "badge--cancelled" %>">
                   <%= product.active? ? "Ativo" : "Inativo" %>

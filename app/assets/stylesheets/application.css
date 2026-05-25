@@ -82,6 +82,16 @@ img { max-width: 100%; display: block; }
   white-space: nowrap;
 }
 .topnav__user span { color: rgba(255,255,255,.8); font-size: .85rem; }
+.topnav__hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  padding: .25rem;
+  flex-shrink: 0;
+}
+.topnav__hamburger svg { width: 1.5rem; height: 1.5rem; display: block; }
 
 /* --- Layout ----------------------------------------------- */
 .app-body { max-width: 1200px; margin: 0 auto; padding: 1.5rem; position: relative; z-index: 1; }
@@ -672,8 +682,30 @@ nav.pagination .gap { border: none; background: none; }
   .login-page__divider { display: none; }
 }
 @media (max-width: 640px) {
-  .topnav { gap: .75rem; padding: 0 1rem; }
+  .topnav { gap: .5rem; padding: 0 1rem; position: relative; flex-wrap: wrap; }
   .topnav__links { display: none; }
+  .topnav__hamburger { display: flex; margin-left: auto; }
+  .topnav__username { display: none; }
+  .topnav__user { gap: .5rem; }
+
+  .topnav--open .topnav__links {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    background: var(--primary);
+    padding: .5rem 1rem 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,.25);
+    z-index: 99;
+    gap: .1rem;
+  }
+  .topnav--open .topnav__links a {
+    padding: .6rem .75rem;
+    border-radius: var(--radius);
+  }
+
   .app-body { padding: 1rem; }
   .cart-item { grid-template-columns: 1fr auto auto; }
 }

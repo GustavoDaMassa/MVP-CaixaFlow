@@ -13,9 +13,9 @@
 
   <body>
     <% if user_signed_in? %>
-      <nav class="topnav">
+      <nav class="topnav" data-controller="nav">
         <span class="topnav__brand">CaixaFlow</span>
-        <ul class="topnav__links">
+        <ul class="topnav__links" data-action="click->nav#close">
           <li><%= link_to "Pedidos",    orders_path,           class: active_nav_class("orders") %></li>
           <li><%= link_to "Clientes",   customers_path,        class: active_nav_class("customers") %></li>
           <li><%= link_to "Produtos",   products_path,         class: active_nav_class("products") %></li>
@@ -34,9 +34,16 @@
             <%= link_to "○ Caixa fechado", new_cash_register_path,
                   style: "color:rgba(255,255,255,.5);font-size:.8rem;text-decoration:none" %>
           <% end %>
-          <span><%= current_user.name %></span>
+          <span class="topnav__username"><%= current_user.name %></span>
           <%= button_to "Sair", destroy_user_session_path, method: :delete, class: "btn btn-sm btn-secondary" %>
         </div>
+        <button class="topnav__hamburger" data-action="nav#toggle" aria-label="Menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <line x1="3" y1="6"  x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
       </nav>
     <% end %>
 

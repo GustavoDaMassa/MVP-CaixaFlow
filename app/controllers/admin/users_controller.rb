@@ -35,8 +35,12 @@ module Admin
     end
 
     def destroy
-      @user.destroy
-      redirect_to admin_users_path, notice: "Usuário removido."
+      if @user.admin?
+        redirect_to admin_users_path, alert: "Usuários administradores não podem ser removidos diretamente."
+      else
+        @user.destroy
+        redirect_to admin_users_path, notice: "Usuário removido."
+      end
     end
 
     private

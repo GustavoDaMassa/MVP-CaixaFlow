@@ -1,7 +1,14 @@
 <% content_for :title, @customer.name %>
 <div class="page-header">
   <h1 class="page-title"><%= @customer.name %></h1>
-  <%= link_to "Editar", edit_customer_path(@customer), class: "btn btn-secondary" %>
+  <% if current_user.admin? %>
+    <div style="display:flex;gap:.5rem">
+      <%= link_to "Editar", edit_customer_path(@customer), class: "btn btn-secondary" %>
+      <%= button_to "Remover", customer_path(@customer), method: :delete,
+            data: { turbo_confirm: "Remover #{@customer.name}?" },
+            class: "btn btn-danger" %>
+    </div>
+  <% end %>
 </div>
 <div class="card">
   <div class="detail-grid">

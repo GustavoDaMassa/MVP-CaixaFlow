@@ -2,7 +2,12 @@
 <div class="page-header">
   <h1 class="page-title"><%= @product.name %></h1>
   <% if current_user.admin? %>
-    <%= link_to "Editar", edit_product_path(@product), class: "btn btn-secondary" %>
+    <div style="display:flex;gap:.5rem">
+      <%= link_to "Editar", edit_product_path(@product), class: "btn btn-secondary" %>
+      <%= button_to "Remover", product_path(@product), method: :delete,
+            data: { turbo_confirm: "Remover #{@product.name}?" },
+            class: "btn btn-danger" %>
+    </div>
   <% end %>
 </div>
 <div class="card">

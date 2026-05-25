@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   end
 
   resources :categories
-  resources :customers, only: %i[index show new create edit update]
+  resources :customers
   resources :products
   resources :cash_registers, only: %i[index show new create] do
     member { patch :close }

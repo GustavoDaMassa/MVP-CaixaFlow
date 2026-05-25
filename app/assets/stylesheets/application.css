@@ -381,9 +381,9 @@ nav.pagination .gap { border: none; background: none; }
 }
 .pos-login-card {
   position: absolute;
-  /* interior da tela: x 36.9%, top 15.6%, width 29.1% do container */
+  /* interior da tela: x 36.9%, top 11.4%, width 29.1% do container */
   left:  36.9%;
-  top:   15.6%;
+  top:   11.4%;
   width: 29.1%;
   background: #fff;
   display: flex;

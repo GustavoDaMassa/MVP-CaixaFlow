@@ -1,0 +1,114 @@
+<% content_for :title, "Caixa ##{@cash_register.id}" %>
+
+<div class="page-header">
+  <h1 class="page-title">Caixa #<%= @cash_register.id %></h1>
+  <% if @cash_register.open? %>
+    <span class="badge badge--ready" style="font-size:.85rem;padding:.35rem .75rem">Aberto</span>
+  <% else %>
+    <span class="badge badge--cancelled" style="font-size:.85rem;padding:.35rem .75rem">Fechado</span>
+  <% end %>
+</div>
+
+<div class="card card-body" style="max-width:520px;margin-bottom:1rem">
+  <div class="detail-grid">
+    <div class="detail-item">
+      <p class="detail-item__label">Operador</p>
+      <p class="detail-item__value"><%= @cash_register.user.name %></p>
+    </div>
+    <div class="detail-item">
+      <p class="detail-item__label">Abertura</p>
+      <p class="detail-item__value"><%= l @cash_register.opened_at, format: :long %></p>
+    </div>
+    <% if @cash_register.closed_at %>
+      <div class="detail-item">
+        <p class="detail-item__label">Fechamento</p>
+        <p class="detail-item__value"><%= l @cash_register.closed_at, format: :long %></p>
+      </div>
+    <% end %>
+    <div class="detail-item">
+      <p class="detail-item__label">Duração</p>
+      <p class="detail-item__value"><%= @cash_register.duration %>h</p>
+    </div>
+    <div class="detail-item">
+      <p class="detail-item__label">Valor inicial</p>
+      <p class="detail-item__value"><%= number_to_currency(@cash_register.opening_amount, unit: "R$", separator: ",", delimiter: ".") %></p>
+    </div>
+    <div class="detail-item">
+      <p class="detail-item__label">Faturamento</p>
+      <p class="detail-item__value"><strong><%= number_to_currency(@cash_register.total_sales, unit: "R$", separator: ",", delimiter: ".") %></strong></p>
+    </div>
+    <% if @cash_register.closing_amount %>
+      <div class="detail-item">
+        <p class="detail-item__label">Valor contado</p>
+        <p class="detail-item__value"><%= number_to_currency(@cash_register.closing_amount, unit: "R$", separator: ",", delimiter: ".") %></p>
+      </div>
+      <div class="detail-item">
+        <p class="detail-item__label">Diferença</p>
+        <% diff = @cash_register.closing_amount - @cash_register.opening_amount - @cash_register.total_sales %>
+        <p class="detail-item__value" style="color:<%= diff >= 0 ? 'var(--success)' : 'var(--danger)' %>">
+          <%= number_to_currency(diff, unit: "R$", separator: ",", delimiter: ".") %>
+        </p>
+      </div>
+    <% end %>
+    <% if @cash_register.notes.present? %>
+      <div class="detail-item" style="grid-column:1/-1">
+        <p class="detail-item__label">Observações</p>
+        <p class="detail-item__value"><%= @cash_register.notes %></p>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<% if @cash_register.open? %>
+  <div class="card card-body" style="max-width:520px;margin-bottom:1rem;border-color:#fca5a5">
+    <h3 style="font-size:.95rem;font-weight:600;margin-bottom:.75rem">Fechar caixa</h3>
+    <%= form_with url: close_cash_register_path(@cash_register), method: :patch, data: { turbo: false } do |f| %>
+      <div class="form-group">
+        <%= f.label :closing_amount, "Valor contado em caixa (R$)" %>
+        <%= f.number_field :closing_amount, step: "0.01", min: "0", class: "form-control",
+              name: "cash_register[closing_amount]", value: @cash_register.opening_amount %>
+      </div>
+      <div class="form-group">
+        <%= f.label :notes, "Observações" %>
+        <%= f.text_area :notes, class: "form-control", rows: 2, name: "cash_register[notes]",
+              value: @cash_register.notes %>
+      </div>
+      <%= f.submit "Fechar caixa", class: "btn btn-danger" %>
+      <%= link_to "Cancelar", cash_registers_path, class: "btn btn-secondary" %>
+    <% end %>
+  </div>
+<% end %>
+
+<div class="card" style="margin-top:1rem">
+  <div style="padding:.75rem 1rem;border-bottom:1px solid var(--border);font-weight:600;font-size:.9rem">
+    Pedidos do turno (<%= @cash_register.orders.count %>)
+  </div>
+  <% if @cash_register.orders.empty? %>
+    <div class="empty-state"><p>Nenhum pedido neste turno.</p></div>
+  <% else %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Cliente</th>
+          <th>Atendente</th>
+          <th>Total</th>
+          <th>Hora</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @cash_register.orders.includes(:customer, :user).order(created_at: :desc).each do |order| %>
+          <tr>
+            <td><%= link_to "##{order.id}", order_path(order) %></td>
+            <td><%= order.customer&.name || "Balcão" %></td>
+            <td class="text-muted"><%= order.user.name %></td>
+            <td><%= number_to_currency(order.total, unit: "R$", separator: ",", delimiter: ".") %></td>
+            <td class="text-muted"><%= l order.created_at, format: :short %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>
+
+<div style="margin-top:.75rem"><%= link_to "← Caixa", cash_registers_path, class: "btn btn-link" %></div>

@@ -16,16 +16,24 @@
       <nav class="topnav">
         <span class="topnav__brand">CaixaFlow</span>
         <ul class="topnav__links">
-          <li><%= link_to "Pedidos",    orders_path,      class: active_nav_class("orders") %></li>
-          <li><%= link_to "Clientes",   customers_path,   class: active_nav_class("customers") %></li>
-          <li><%= link_to "Produtos",   products_path,    class: active_nav_class("products") %></li>
-          <li><%= link_to "Categorias", categories_path,  class: active_nav_class("categories") %></li>
+          <li><%= link_to "Pedidos",    orders_path,           class: active_nav_class("orders") %></li>
+          <li><%= link_to "Clientes",   customers_path,        class: active_nav_class("customers") %></li>
+          <li><%= link_to "Produtos",   products_path,         class: active_nav_class("products") %></li>
+          <li><%= link_to "Categorias", categories_path,       class: active_nav_class("categories") %></li>
+          <li><%= link_to "Caixa",      cash_registers_path,   class: active_nav_class("cash_registers") %></li>
           <% if current_user.admin? %>
-            <li><%= link_to "Dashboard", admin_root_path, class: active_nav_class("admin") %></li>
-            <li><%= link_to "Usuários",  admin_users_path, class: active_nav_class("admin/users") %></li>
+            <li><%= link_to "Dashboard", admin_root_path,      class: active_nav_class("admin") %></li>
+            <li><%= link_to "Usuários",  admin_users_path,     class: active_nav_class("admin/users") %></li>
           <% end %>
         </ul>
         <div class="topnav__user">
+          <% if CashRegister.current %>
+            <%= link_to "● Caixa aberto", cash_registers_path,
+                  style: "color:#86efac;font-size:.8rem;font-weight:600;text-decoration:none" %>
+          <% else %>
+            <%= link_to "○ Caixa fechado", new_cash_register_path,
+                  style: "color:rgba(255,255,255,.5);font-size:.8rem;text-decoration:none" %>
+          <% end %>
           <span><%= current_user.name %></span>
           <%= button_to "Sair", destroy_user_session_path, method: :delete, class: "btn btn-sm btn-secondary" %>
         </div>

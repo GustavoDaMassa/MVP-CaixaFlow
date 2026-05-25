@@ -10,9 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_23_002100) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_25_125342) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "cash_registers", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.decimal "opening_amount", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "closing_amount", precision: 10, scale: 2
+    t.datetime "opened_at", null: false
+    t.datetime "closed_at"
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_cash_registers_on_user_id"
+  end
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
@@ -82,6 +94,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_23_002100) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "cash_registers", "users"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "orders", "customers"

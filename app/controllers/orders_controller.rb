@@ -1,5 +1,6 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: %i[show edit update destroy]
+  before_action :require_open_cash, only: %i[new create]
 
   def index
     @q = scoped_orders.ransack(params[:q])
@@ -59,6 +60,12 @@ class OrdersController < ApplicationController
     @order = scoped_orders.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     redirect_to orders_path, alert: "Pedido não encontrado."
+  end
+
+  def require_open_cash
+    unless CashRegister.current
+      redirect_to cash_registers_path, alert: "Abra o caixa antes de registrar pedidos."
+    end
   end
 
   def scoped_orders

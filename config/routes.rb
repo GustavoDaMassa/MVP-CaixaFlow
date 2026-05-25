@@ -9,9 +9,7 @@ Rails.application.routes.draw do
   resources :categories
   resources :customers, only: %i[index show new create edit update]
   resources :products
-  resources :orders do
-    member { patch :update_status }
-  end
+  resources :orders
 
   get "up" => "rails/health#show", as: :rails_health_check
 

@@ -4,18 +4,6 @@
   <h1>Dashboard</h1>
 
   <section class="dashboard-section">
-    <h2>Pedidos hoje</h2>
-    <div class="status-grid">
-      <% Order.statuses.each_key do |status| %>
-        <div class="status-card status-card--<%= status %>">
-          <span class="status-card__count"><%= @stats.orders_today_by_status[status] || 0 %></span>
-          <span class="status-card__label"><%= status.humanize %></span>
-        </div>
-      <% end %>
-    </div>
-  </section>
-
-  <section class="dashboard-section">
     <h2>Faturamento</h2>
     <div class="revenue-grid">
       <div class="revenue-card">
@@ -30,34 +18,6 @@
   </section>
 
   <section class="dashboard-section">
-    <h2>Estoque baixo</h2>
-    <% if @stats.low_stock_products.empty? %>
-      <p class="empty-state">Nenhum produto abaixo do threshold.</p>
-    <% else %>
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>Produto</th>
-            <th>Estoque</th>
-            <th>Mínimo</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @stats.low_stock_products.each do |product| %>
-            <tr>
-              <td><%= product.name %></td>
-              <td class="text-danger"><%= product.stock %></td>
-              <td><%= product.low_stock_threshold %></td>
-              <td><%= link_to "Editar", edit_product_path(product) %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    <% end %>
-  </section>
-
-  <section class="dashboard-section">
     <h2>Últimos pedidos</h2>
     <% if @stats.recent_orders.empty? %>
       <p class="empty-state">Nenhum pedido ainda.</p>
@@ -68,7 +28,6 @@
             <th>#</th>
             <th>Cliente</th>
             <th>Atendente</th>
-            <th>Status</th>
             <th>Total</th>
             <th>Data</th>
           </tr>
@@ -79,7 +38,6 @@
               <td><%= link_to "##{order.id}", order_path(order) %></td>
               <td><%= order.customer&.name || "Balcão" %></td>
               <td><%= order.user.name %></td>
-              <td><span class="badge badge--<%= order.status %>"><%= order.status.humanize %></span></td>
               <td><%= number_to_currency(order.total, unit: "R$", separator: ",", delimiter: ".") %></td>
               <td><%= l order.created_at, format: :short %></td>
             </tr>

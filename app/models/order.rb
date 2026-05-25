@@ -4,12 +4,10 @@ class Order < ApplicationRecord
   has_many :order_items, dependent: :destroy
   has_many :products, through: :order_items
 
-  enum :status, { pending: 0, preparing: 1, ready: 2, delivered: 3, cancelled: 4 }, default: :pending
-
   accepts_nested_attributes_for :order_items, allow_destroy: true, reject_if: :all_blank
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[status created_at scheduled_for customer_id user_id]
+    %w[created_at scheduled_for customer_id user_id]
   end
 
   def self.ransackable_associations(_auth_object = nil)

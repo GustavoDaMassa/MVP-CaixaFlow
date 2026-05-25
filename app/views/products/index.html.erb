@@ -34,7 +34,6 @@
             <th>Nome</th>
             <th>Categoria</th>
             <th class="text-right">Preço</th>
-            <th class="text-right">Estoque</th>
             <th>Status</th>
             <% if current_user.admin? %><th></th><% end %>
           </tr>
@@ -45,9 +44,6 @@
               <td><%= link_to product.name, product_path(product) %></td>
               <td class="text-muted"><%= product.category.name %></td>
               <td class="text-right"><%= number_to_currency(product.price, unit: "R$", separator: ",", delimiter: ".") %></td>
-              <td class="text-right <%= "text-danger" if product.low_stock? %>">
-                <%= product.stock %><% if product.low_stock? %> ⚠<% end %>
-              </td>
               <td>
                 <span class="badge <%= product.active? ? "badge--ready" : "badge--cancelled" %>">
                   <%= product.active? ? "Ativo" : "Inativo" %>

@@ -1,7 +1,0 @@
-Alerta de estoque baixo
-
-Olá, <%= @admin.name %>. Os seguintes produtos estão abaixo do threshold mínimo:
-
-<% @products.each do |product| %>
-- <%= product.name %>: <%= product.stock %> em estoque (mínimo: <%= product.low_stock_threshold %>)
-<% end %>

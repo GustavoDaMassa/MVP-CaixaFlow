@@ -9,12 +9,6 @@
   <div class="filter-bar">
     <%= search_form_for @q, html: { style: "display:contents" } do |f| %>
       <div class="form-group">
-        <%= f.label :status_eq, "Status" %>
-        <%= f.select :status_eq,
-              Order.statuses.keys.map { |s| [s.humanize, s] },
-              { include_blank: "Todos" }, class: "form-control" %>
-      </div>
-      <div class="form-group">
         <%= f.label :created_at_gteq, "A partir de" %>
         <%= f.date_field :created_at_gteq, class: "form-control" %>
       </div>
@@ -33,7 +27,6 @@
             <th>#</th>
             <th>Cliente</th>
             <% if current_user.admin? %><th>Atendente</th><% end %>
-            <th>Status</th>
             <th class="text-right">Total</th>
             <th>Data</th>
             <th></th>
@@ -47,7 +40,6 @@
               <% if current_user.admin? %>
                 <td class="text-muted"><%= order.user.name %></td>
               <% end %>
-              <td><span class="badge badge--<%= order.status %>"><%= order.status.humanize %></span></td>
               <td class="text-right"><%= number_to_currency(order.total, unit: "R$", separator: ",", delimiter: ".") %></td>
               <td class="text-muted"><%= l order.created_at, format: :short %></td>
               <td class="actions">

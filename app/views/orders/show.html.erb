@@ -4,29 +4,13 @@
   <h1 class="page-title">Pedido #<%= @order.id %></h1>
   <div style="display:flex;gap:.5rem;flex-wrap:wrap">
     <%= link_to "Editar", edit_order_path(@order), class: "btn btn-secondary" %>
-    <%= button_to "Cancelar pedido", order_path(@order), method: :delete,
-          data: { turbo_confirm: "Cancelar este pedido?" },
-          class: "btn btn-danger",
-          disabled: @order.cancelled? || @order.delivered? %>
+    <%= button_to "Remover pedido", order_path(@order), method: :delete,
+          data: { turbo_confirm: "Remover este pedido?" },
+          class: "btn btn-danger" %>
   </div>
 </div>
 
 <div class="card" style="margin-bottom:1rem">
-  <div class="status-bar">
-    <strong>Status:</strong>
-    <span class="badge badge--<%= @order.status %>"><%= @order.status.humanize %></span>
-    <% unless @order.cancelled? || @order.delivered? %>
-      <%= form_with url: update_status_order_path(@order), method: :patch, style: "display:contents" do |f| %>
-        <% next_statuses = { "pending" => "preparing", "preparing" => "ready", "ready" => "delivered" } %>
-        <% if (next = next_statuses[@order.status]) %>
-          <%= f.hidden_field :order, value: nil %>
-          <input type="hidden" name="order[status]" value="<%= next %>">
-          <%= f.submit "→ #{next.humanize}", class: "btn btn-sm btn-primary" %>
-        <% end %>
-      <% end %>
-    <% end %>
-  </div>
-
   <div class="detail-grid">
     <div class="detail-item">
       <p class="detail-item__label">Cliente</p>

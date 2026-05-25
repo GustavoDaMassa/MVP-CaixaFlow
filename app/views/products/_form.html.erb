@@ -18,15 +18,6 @@
       <%= f.label :price, "Preço (R$)" %>
       <%= f.number_field :price, step: "0.01", min: "0.01", class: "form-control" %>
     </div>
-    <div class="form-group">
-      <%= f.label :stock, "Estoque atual" %>
-      <%= f.number_field :stock, min: 0, class: "form-control" %>
-    </div>
-    <div class="form-group">
-      <%= f.label :low_stock_threshold, "Estoque mínimo (alerta)" %>
-      <%= f.number_field :low_stock_threshold, min: 0, class: "form-control" %>
-      <p class="form-hint">Alerta enviado quando o estoque cair abaixo deste valor.</p>
-    </div>
     <div class="form-group form-check">
       <%= f.check_box :active %>
       <%= f.label :active, "Produto ativo" %>

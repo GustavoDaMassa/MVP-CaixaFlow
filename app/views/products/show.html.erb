@@ -16,13 +16,6 @@
       <p class="detail-item__value"><%= number_to_currency(@product.price, unit: "R$", separator: ",", delimiter: ".") %></p>
     </div>
     <div class="detail-item">
-      <p class="detail-item__label">Estoque</p>
-      <p class="detail-item__value <%= "text-danger" if @product.low_stock? %>">
-        <%= @product.stock %>
-        <% if @product.low_stock? %><span class="text-muted">(abaixo do mínimo: <%= @product.low_stock_threshold %>)</span><% end %>
-      </p>
-    </div>
-    <div class="detail-item">
       <p class="detail-item__label">Status</p>
       <p class="detail-item__value">
         <span class="badge <%= @product.active? ? "badge--ready" : "badge--cancelled" %>">

@@ -159,7 +159,9 @@ table.table { width: 100%; border-collapse: collapse; font-size: .9rem; }
 .table tr:last-child td { border-bottom: none; }
 .table tbody tr:hover { background: #faf7f3; }
 .table .actions { display: flex; gap: .5rem; align-items: center; }
-.text-right { text-align: right; }
+.text-right,
+.table th.text-right,
+.table td.text-right { text-align: right; }
 .text-muted  { color: var(--text-muted); }
 
 /* --- Badges ----------------------------------------------- */

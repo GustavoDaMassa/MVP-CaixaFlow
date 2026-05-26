@@ -23,6 +23,8 @@ services:
       - caixaflow-redis
     volumes:
       - caixaflow_storage:/rails/storage
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     restart: unless-stopped
 
   caixaflow-sidekiq:
@@ -38,6 +40,8 @@ services:
     depends_on:
       - caixaflow-db
       - caixaflow-redis
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     restart: unless-stopped
 
   caixaflow-db:
@@ -60,7 +64,7 @@ services:
     image: containrrr/watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: caixaflow caixaflow-sidekiq --interval 30 --cleanup
+    command: --label-enable --interval 30 --cleanup
     environment:
       DOCKER_API_VERSION: "1.44"
     restart: unless-stopped

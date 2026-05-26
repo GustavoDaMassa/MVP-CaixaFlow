@@ -1,3 +1,16 @@
 <svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="256" cy="256" r="256" fill="red"/>
+  <circle cx="256" cy="256" r="256" fill="#1A3C28"/>
+  <g transform="translate(256,256)" stroke="white" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- tela -->
+    <rect x="-70" y="-130" width="140" height="110" rx="4"/>
+    <!-- haste -->
+    <line x1="0" y1="-20" x2="0" y2="30"/>
+    <line x1="-30" y1="30" x2="30" y2="30"/>
+    <!-- corpo da caixa -->
+    <rect x="-110" y="30" width="220" height="80" rx="4"/>
+    <!-- botão -->
+    <circle cx="0" cy="70" r="10"/>
+    <!-- base -->
+    <line x1="-120" y1="110" x2="120" y2="110"/>
+  </g>
 </svg>

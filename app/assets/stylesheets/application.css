@@ -708,4 +708,5 @@ nav.pagination .gap { border: none; background: none; }
 
   .app-body { padding: 1rem; }
   .cart-item { grid-template-columns: 1fr auto auto; }
+  .app-footer { display: none; }
 }

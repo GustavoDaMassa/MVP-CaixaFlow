@@ -65,3 +65,22 @@ Registro de bugs identificados e corrigidos durante o desenvolvimento.
 **Lição:** Specs de job e mailer com `have_enqueued_mail`/`have_enqueued_job` sempre requerem `queue_adapter :test`. Configurar por tipo (`:job`) no `rails_helper` evita esquecer em cada spec individual.
 
 ---
+
+## Login retorna 422 em produção — `authenticate_user!` bloqueando o próprio sign_in
+
+**Indícios:** POST `/users/sign_in` retornava 422 (Unprocessable Content) em produção. O log Rails mostrava `Completed 401 Unauthorized in 5ms (ActiveRecord: 0.0ms (0 queries, 0 cached))` — nenhuma query ao banco, Warden rejeitava antes de verificar as credenciais.
+
+**Diagnóstico:** O `before_action :authenticate_user!` em `ApplicationController` dispara para todos os controllers, incluindo `Devise::SessionsController`. Ao fazer POST em `/users/sign_in`, o usuário ainda não está autenticado, então Warden ativa o failure app e retorna 401 com sessão nula. Rails/Thruster reinterpreta como 422.
+
+**Causa raiz:** `authenticate_user!` sem a guarda `unless: :devise_controller?` impede que o próprio fluxo de login do Devise seja executado — a autenticação bloqueia a ação que faria a autenticação.
+
+**Solução:** Adicionado `unless: :devise_controller?` ao before_action em `ApplicationController`:
+```ruby
+before_action :authenticate_user!, unless: :devise_controller?
+```
+
+**Commit:** `d82ed67`
+
+**Lição:** `authenticate_user!` no `ApplicationController` deve sempre excluir os controllers do Devise. Sem isso, o login funciona em desenvolvimento (sessão já existente do dev) mas falha na primeira tentativa em produção (sem sessão prévia). O sintoma de 401 com 0 queries é sinal de que o Warden rejeitou antes de chegar ao banco — não é erro de credencial nem de CSRF.
+
+---

@@ -37,3 +37,6 @@
 # Local env file
 .env
 .env.local
+
+# Local bug log
+Erros.md

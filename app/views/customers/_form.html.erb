@@ -6,6 +6,11 @@
       <%= f.text_field :name, class: "form-control", autofocus: true %>
     </div>
     <div class="form-group">
+      <%= f.label :cpf_cnpj, "CPF / CNPJ" %>
+      <%= f.text_field :cpf_cnpj, class: "form-control", placeholder: "000.000.000-00 ou 00.000.000/0000-00" %>
+      <p class="form-hint">Opcional — necessário para emissão de NF-e com destinatário identificado.</p>
+    </div>
+    <div class="form-group">
       <%= f.label :phone, "Telefone" %>
       <%= f.text_field :phone, class: "form-control", placeholder: "(62) 99999-9999" %>
     </div>

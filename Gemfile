@@ -21,6 +21,10 @@ gem "ransack"
 # Pagination
 gem "kaminari"
 
+# HTTP client
+gem "faraday"
+gem "faraday-retry"
+
 # Background jobs
 gem "sidekiq", "~> 7.0"
 gem "sidekiq-cron"

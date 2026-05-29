@@ -155,7 +155,7 @@ table.table { width: 100%; border-collapse: collapse; font-size: .9rem; }
 .table th {
   text-align: left;
   padding: .65rem 1rem;
-  background: #f4f0eb;
+  background: var(--primary-light);
   border-bottom: 2px solid var(--border);
   font-weight: 600;
   color: var(--text-muted);
@@ -170,7 +170,7 @@ table.table { width: 100%; border-collapse: collapse; font-size: .9rem; }
   vertical-align: middle;
 }
 .table tr:last-child td { border-bottom: none; }
-.table tbody tr:hover { background: #faf7f3; }
+.table tbody tr:hover { background: var(--primary-light); }
 .table .actions { display: flex; gap: .5rem; align-items: center; }
 .text-right,
 .table th.text-right,
@@ -259,7 +259,7 @@ textarea.form-control { resize: vertical; min-height: 80px; }
   align-items: flex-end;
   flex-wrap: wrap;
   padding: 1rem;
-  background: #f9f6f2;
+  background: var(--primary-light);
   border-bottom: 1px solid var(--border);
 }
 .filter-bar .form-group { margin: 0; }

@@ -1,0 +1,63 @@
+<% content_for :title, "NF-e — Pedido ##{@order.id}" %>
+
+<% status_badge = { "authorized" => "authorized", "pending" => "pending", "rejected" => "rejected", "cancelled" => "cancelled" }.fetch(@fiscal_document.status, "pending") %>
+<% status_label = { "authorized" => "Autorizada", "pending" => "Pendente", "rejected" => "Rejeitada", "cancelled" => "Cancelada" }.fetch(@fiscal_document.status, @fiscal_document.status) %>
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Nota Fiscal</h1>
+    <p class="text-muted" style="font-size:.9rem;margin-top:.2rem">Pedido #<%= @order.id %></p>
+  </div>
+  <div style="display:flex;gap:.5rem;align-items:center">
+    <% if @fiscal_document.danfe_available? %>
+      <%= link_to "Baixar DANFE", @fiscal_document.danfe_url, target: "_blank", class: "btn btn-primary" %>
+    <% end %>
+    <% if @fiscal_document.pending? %>
+      <%= button_to "Atualizar status", check_status_order_fiscal_document_path(@order), method: :post, class: "btn btn-secondary" %>
+    <% end %>
+    <%= link_to "← Pedido", order_path(@order), class: "btn btn-link" %>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-section">
+    <div class="detail-grid" style="padding:0">
+      <div class="detail-item">
+        <p class="detail-item__label">Status</p>
+        <p class="detail-item__value">
+          <span class="badge badge--<%= status_badge %>"><%= status_label %></span>
+        </p>
+      </div>
+      <div class="detail-item">
+        <p class="detail-item__label">Número / Série</p>
+        <p class="detail-item__value"><%= @fiscal_document.numero %> / <%= @fiscal_document.serie %></p>
+      </div>
+      <% if @fiscal_document.emitted_at %>
+        <div class="detail-item">
+          <p class="detail-item__label">Emitida em</p>
+          <p class="detail-item__value"><%= l @fiscal_document.emitted_at, format: :long %></p>
+        </div>
+      <% end %>
+      <% if @fiscal_document.protocolo.present? %>
+        <div class="detail-item">
+          <p class="detail-item__label">Protocolo SEFAZ</p>
+          <p class="detail-item__value" style="font-family:monospace;font-size:.85rem"><%= @fiscal_document.protocolo %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <% if @fiscal_document.chave_acesso.present? %>
+    <div class="card-section">
+      <p class="detail-item__label" style="margin-bottom:.5rem">Chave de Acesso</p>
+      <p style="font-family:monospace;font-size:.85rem;word-break:break-all;color:var(--text-muted)"><%= @fiscal_document.chave_acesso %></p>
+    </div>
+  <% end %>
+
+  <% if @fiscal_document.motivo_rejeicao.present? %>
+    <div class="card-section">
+      <p class="detail-item__label" style="margin-bottom:.5rem">Motivo da Rejeição</p>
+      <p style="color:var(--danger);font-size:.9rem"><%= @fiscal_document.motivo_rejeicao %></p>
+    </div>
+  <% end %>
+</div>

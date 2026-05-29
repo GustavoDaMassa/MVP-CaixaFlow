@@ -13,7 +13,13 @@ Rails.application.routes.draw do
     member { patch :close }
   end
 
-  resources :orders
+  resources :orders do
+    resource :fiscal_document, only: %i[show create] do
+      member { post :check_status }
+    end
+  end
+
+  resource :fiscal_configuration, only: %i[show edit update]
 
   get "up" => "rails/health#show", as: :rails_health_check
 

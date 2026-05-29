@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_25_131046) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_28_182451) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -30,6 +30,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_25_131046) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "ncm"
   end
 
   create_table "customers", force: :cascade do |t|
@@ -40,6 +41,46 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_25_131046) do
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "cpf_cnpj"
+  end
+
+  create_table "fiscal_configurations", force: :cascade do |t|
+    t.string "cnpj"
+    t.string "ie"
+    t.string "im"
+    t.string "razao_social"
+    t.string "nome_fantasia"
+    t.integer "regime_tributario"
+    t.string "logradouro"
+    t.string "numero"
+    t.string "complemento"
+    t.string "bairro"
+    t.string "municipio"
+    t.string "uf"
+    t.string "cep"
+    t.string "codigo_municipio"
+    t.string "cfop_padrao", default: "5102", null: false
+    t.integer "serie_nfe", default: 1, null: false
+    t.integer "numero_atual_nfe", default: 1, null: false
+    t.string "focus_nfe_token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "fiscal_documents", force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.integer "numero"
+    t.integer "serie"
+    t.string "chave_acesso"
+    t.integer "status", default: 0, null: false
+    t.string "focus_ref"
+    t.string "protocolo"
+    t.text "motivo_rejeicao"
+    t.datetime "emitted_at"
+    t.string "danfe_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_fiscal_documents_on_order_id"
   end
 
   create_table "order_items", force: :cascade do |t|
@@ -77,6 +118,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_25_131046) do
     t.bigint "category_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "ncm"
+    t.string "unidade", default: "UN"
     t.index ["category_id"], name: "index_products_on_category_id"
   end
 
@@ -96,6 +139,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_25_131046) do
   end
 
   add_foreign_key "cash_registers", "users"
+  add_foreign_key "fiscal_documents", "orders"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "orders", "customers"

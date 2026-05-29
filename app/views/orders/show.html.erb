@@ -3,6 +3,15 @@
 <div class="page-header">
   <h1 class="page-title">Pedido #<%= @order.id %></h1>
   <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+    <% if @order.fiscal_document&.authorized? %>
+      <%= link_to "Ver NF-e", order_fiscal_document_path(@order), class: "btn btn-secondary" %>
+    <% elsif @order.fiscal_document&.pending? %>
+      <%= link_to "Verificar status NF-e", order_fiscal_document_path(@order), class: "btn btn-secondary" %>
+    <% else %>
+      <%= button_to "Emitir NF-e", order_fiscal_document_path(@order), method: :post,
+            data: { turbo_confirm: "Emitir nota fiscal para este pedido?" },
+            class: "btn btn-primary" %>
+    <% end %>
     <%= link_to "Editar", edit_order_path(@order), class: "btn btn-secondary" %>
     <%= button_to "Remover pedido", order_path(@order), method: :delete,
           data: { turbo_confirm: "Remover este pedido?" },

@@ -3,6 +3,7 @@ class Order < ApplicationRecord
   belongs_to :customer, optional: true
   has_many :order_items, dependent: :destroy
   has_many :products, through: :order_items
+  has_one :fiscal_document, dependent: :destroy
 
   enum :payment_method, { cash: 0, pix: 1, debit_card: 2, credit_card: 3 }, default: :cash
 

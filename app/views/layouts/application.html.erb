@@ -29,8 +29,9 @@
           <li><%= link_to "Categorias", categories_path,       class: active_nav_class("categories") %></li>
           <li><%= link_to "Caixa",      cash_registers_path,   class: active_nav_class("cash_registers") %></li>
           <% if current_user.admin? %>
-            <li><%= link_to "Dashboard", admin_root_path,      class: active_nav_class("admin") %></li>
-            <li><%= link_to "Usuários",  admin_users_path,     class: active_nav_class("admin/users") %></li>
+            <li><%= link_to "Dashboard",   admin_root_path,            class: active_nav_class("admin") %></li>
+            <li><%= link_to "Usuários",    admin_users_path,           class: active_nav_class("admin/users") %></li>
+            <li><%= link_to "Fiscal",      fiscal_configuration_path,  class: active_nav_class("fiscal_configuration") %></li>
           <% end %>
         </ul>
         <div class="topnav__user">

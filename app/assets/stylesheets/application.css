@@ -193,7 +193,10 @@ table.table { width: 100%; border-collapse: collapse; font-size: .9rem; }
 .badge--preparing { background: #fef9c3; color: #92400e; }
 .badge--ready     { background: var(--success-light); color: var(--success); }
 .badge--delivered { background: #d1fae5; color: #065f46; }
-.badge--cancelled { background: var(--danger-light); color: var(--danger); }
+.badge--cancelled  { background: var(--danger-light); color: var(--danger); }
+.badge--authorized { background: var(--success-light); color: var(--success); }
+.badge--rejected   { background: var(--danger-light);  color: var(--danger); }
+.badge--pending    { background: var(--warning-light);  color: #92400e; }
 
 /* --- Forms ------------------------------------------------- */
 .form-section { max-width: 640px; }
@@ -226,6 +229,15 @@ textarea.form-control { resize: vertical; min-height: 80px; }
 .form-check input[type=checkbox] { width: 1rem; height: 1rem; accent-color: var(--primary); }
 .form-hint { font-size: .8rem; color: var(--text-muted); margin-top: .25rem; }
 .form-actions { display: flex; gap: .75rem; align-items: center; padding-top: .5rem; }
+
+/* --- Form grid -------------------------------------------- */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0 1.25rem;
+}
+.form-grid .form-group { margin-bottom: 1.1rem; }
+.form-grid .form-group--full { grid-column: 1 / -1; }
 
 /* --- Errors ----------------------------------------------- */
 .error-list {

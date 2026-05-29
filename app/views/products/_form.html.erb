@@ -18,6 +18,21 @@
       <%= f.label :price, "Preço (R$)" %>
       <%= f.number_field :price, step: "0.01", min: "0.01", class: "form-control" %>
     </div>
+    <div class="form-group">
+      <%= f.label :ncm, "NCM" %>
+      <%= f.text_field :ncm, class: "form-control", placeholder: "ex: 1905.90.90" %>
+      <p class="form-hint">
+        Opcional — se vazio, herda o NCM da categoria
+        <% if product.persisted? && product.category&.ncm.present? %>
+          (<%= product.category.ncm %>)
+        <% end %>
+      </p>
+    </div>
+    <div class="form-group">
+      <%= f.label :unidade, "Unidade" %>
+      <%= f.text_field :unidade, class: "form-control", placeholder: "UN" %>
+      <p class="form-hint">Unidade comercial: UN, KG, L, CX, etc.</p>
+    </div>
     <div class="form-group form-check">
       <%= f.check_box :active %>
       <%= f.label :active, "Produto ativo" %>

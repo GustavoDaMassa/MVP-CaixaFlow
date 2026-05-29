@@ -5,6 +5,11 @@
       <%= f.label :name, "Nome", class: "form-label" %>
       <%= f.text_field :name, class: "form-control", autofocus: true %>
     </div>
+    <div class="form-group">
+      <%= f.label :ncm, "NCM padrão" %>
+      <%= f.text_field :ncm, class: "form-control", placeholder: "ex: 1905.90.90" %>
+      <p class="form-hint">Todos os produtos desta categoria herdam este NCM quando não tiverem um próprio.</p>
+    </div>
     <div class="form-actions">
       <%= f.submit category.persisted? ? "Salvar alterações" : "Criar categoria", class: "btn btn-primary" %>
       <%= link_to "Cancelar", categories_path, class: "btn btn-secondary" %>

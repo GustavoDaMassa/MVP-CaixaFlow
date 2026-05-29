@@ -4,6 +4,11 @@ class Product < ApplicationRecord
 
   validates :name, presence: true
   validates :price, presence: true, numericality: { greater_than: 0 }
+  validates :ncm, format: { with: /\A\d{4}\.\d{2}\.\d{2}\z/, message: "deve estar no formato 0000.00.00" }, allow_blank: true
+
+  def ncm_efetivo
+    ncm.presence || category&.ncm
+  end
 
   before_create :set_defaults
 

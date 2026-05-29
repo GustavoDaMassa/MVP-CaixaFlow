@@ -1,0 +1,126 @@
+<% content_for :title, "Configuração Fiscal" %>
+
+<div class="page-header">
+  <h1 class="page-title">Configuração Fiscal</h1>
+</div>
+
+<%= form_with model: @fiscal_configuration, url: fiscal_configuration_path, method: :patch do |f| %>
+  <% if @fiscal_configuration.errors.any? %>
+    <div class="error-list">
+      <ul>
+        <% @fiscal_configuration.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="card" style="margin-bottom:1rem">
+    <div class="card-section">
+      <p class="detail-item__label" style="margin-bottom:1rem">Dados da empresa</p>
+      <div class="form-grid">
+        <div class="form-group">
+          <%= f.label :cnpj, "CNPJ" %>
+          <%= f.text_field :cnpj, class: "form-control", placeholder: "00.000.000/0000-00" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :razao_social, "Razão Social" %>
+          <%= f.text_field :razao_social, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :nome_fantasia, "Nome Fantasia" %>
+          <%= f.text_field :nome_fantasia, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :regime_tributario, "Regime Tributário" %>
+          <%= f.select :regime_tributario,
+                [["Simples Nacional", "simples_nacional"],
+                 ["Simples Nacional — Excesso", "simples_nacional_excesso"],
+                 ["Regime Normal", "regime_normal"]],
+                { include_blank: "Selecione..." },
+                class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :ie, "Inscrição Estadual" %>
+          <%= f.text_field :ie, class: "form-control", placeholder: "ISENTO ou número" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :im, "Inscrição Municipal" %>
+          <%= f.text_field :im, class: "form-control", placeholder: "Opcional" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-section">
+      <p class="detail-item__label" style="margin-bottom:1rem">Endereço</p>
+      <div class="form-grid">
+        <div class="form-group form-group--full">
+          <%= f.label :logradouro, "Logradouro" %>
+          <%= f.text_field :logradouro, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :numero, "Número" %>
+          <%= f.text_field :numero, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :complemento, "Complemento" %>
+          <%= f.text_field :complemento, class: "form-control", placeholder: "Opcional" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :bairro, "Bairro" %>
+          <%= f.text_field :bairro, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :municipio, "Município" %>
+          <%= f.text_field :municipio, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :uf, "UF" %>
+          <%= f.text_field :uf, class: "form-control", maxlength: 2, placeholder: "SP" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :cep, "CEP" %>
+          <%= f.text_field :cep, class: "form-control", placeholder: "00000-000" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :codigo_municipio, "Código IBGE" %>
+          <%= f.text_field :codigo_municipio, class: "form-control", placeholder: "ex: 3550308" %>
+          <p class="form-hint">Código do município na tabela do IBGE</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-section">
+      <p class="detail-item__label" style="margin-bottom:1rem">Configuração NF-e</p>
+      <div class="form-grid">
+        <div class="form-group">
+          <%= f.label :cfop_padrao, "CFOP Padrão" %>
+          <%= f.select :cfop_padrao,
+                [["5102 — Venda dentro do estado", "5102"],
+                 ["6102 — Venda interestadual",    "6102"]],
+                {},
+                class: "form-control" %>
+          <p class="form-hint">Usado para todos os itens da nota</p>
+        </div>
+        <div class="form-group">
+          <%= f.label :serie_nfe, "Série NF-e" %>
+          <%= f.number_field :serie_nfe, class: "form-control", min: 1 %>
+        </div>
+        <div class="form-group form-group--full">
+          <%= f.label :focus_nfe_token, "Token Focus NF-e" %>
+          <%= f.password_field :focus_nfe_token, class: "form-control", placeholder: @fiscal_configuration.focus_nfe_token.present? ? "Token já configurado — deixe em branco para manter" : "Cole o token aqui", autocomplete: "off" %>
+          <p class="form-hint">Encontrado em Minhas Empresas → Tokens no painel Focus NF-e</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-section">
+      <div class="form-actions">
+        <%= f.submit "Salvar configuração", class: "btn btn-primary" %>
+        <% unless @fiscal_configuration.new_record? %>
+          <%= link_to "Cancelar", fiscal_configuration_path, class: "btn btn-secondary" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

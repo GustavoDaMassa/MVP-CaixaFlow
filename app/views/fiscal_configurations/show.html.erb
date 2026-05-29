@@ -1,0 +1,73 @@
+<% content_for :title, "Configuração Fiscal" %>
+
+<div class="page-header">
+  <h1 class="page-title">Configuração Fiscal</h1>
+  <%= link_to "Editar", edit_fiscal_configuration_path, class: "btn btn-secondary" %>
+</div>
+
+<% if @fiscal_configuration.new_record? %>
+  <div class="card">
+    <div class="empty-state">
+      <p>Nenhuma configuração fiscal cadastrada.</p>
+      <%= link_to "Configurar agora", edit_fiscal_configuration_path, class: "btn btn-primary", style: "margin-top:.75rem" %>
+    </div>
+  </div>
+<% else %>
+  <div class="card" style="margin-bottom:1rem">
+    <div class="card-section">
+      <p class="detail-item__label" style="margin-bottom:1rem">Empresa emissora</p>
+      <div class="detail-grid" style="padding:0">
+        <div class="detail-item">
+          <p class="detail-item__label">CNPJ</p>
+          <p class="detail-item__value"><%= @fiscal_configuration.cnpj %></p>
+        </div>
+        <div class="detail-item">
+          <p class="detail-item__label">Razão Social</p>
+          <p class="detail-item__value"><%= @fiscal_configuration.razao_social %></p>
+        </div>
+        <div class="detail-item">
+          <p class="detail-item__label">Nome Fantasia</p>
+          <p class="detail-item__value"><%= @fiscal_configuration.nome_fantasia.presence || "—" %></p>
+        </div>
+        <div class="detail-item">
+          <p class="detail-item__label">Regime Tributário</p>
+          <p class="detail-item__value">
+            <%= { "simples_nacional" => "Simples Nacional", "simples_nacional_excesso" => "Simples Nacional — Excesso", "regime_normal" => "Regime Normal" }.fetch(@fiscal_configuration.regime_tributario.to_s, "—") %>
+          </p>
+        </div>
+        <div class="detail-item">
+          <p class="detail-item__label">IE</p>
+          <p class="detail-item__value"><%= @fiscal_configuration.ie.presence || "—" %></p>
+        </div>
+        <div class="detail-item">
+          <p class="detail-item__label">Município / UF</p>
+          <p class="detail-item__value"><%= @fiscal_configuration.municipio %> / <%= @fiscal_configuration.uf %></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-section">
+      <p class="detail-item__label" style="margin-bottom:1rem">Configuração NF-e</p>
+      <div class="detail-grid" style="padding:0">
+        <div class="detail-item">
+          <p class="detail-item__label">CFOP Padrão</p>
+          <p class="detail-item__value"><%= @fiscal_configuration.cfop_padrao %></p>
+        </div>
+        <div class="detail-item">
+          <p class="detail-item__label">Série / Próximo número</p>
+          <p class="detail-item__value"><%= @fiscal_configuration.serie_nfe %> / <%= @fiscal_configuration.numero_atual_nfe %></p>
+        </div>
+        <div class="detail-item">
+          <p class="detail-item__label">Token Focus NF-e</p>
+          <p class="detail-item__value" style="font-family:monospace;font-size:.85rem">
+            <% if @fiscal_configuration.focus_nfe_token.present? %>
+              ••••••••<%= @fiscal_configuration.focus_nfe_token.last(4) %>
+            <% else %>
+              <span class="text-muted">Não configurado</span>
+            <% end %>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

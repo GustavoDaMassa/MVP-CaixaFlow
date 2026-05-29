@@ -79,7 +79,7 @@ class FocusNfeClient
   end
 
   def handle_response(response)
-    return response.body if response.status.in?([200, 201, 202])
+    return response.body if response.status.in?([ 200, 201, 202 ])
     raise ApiError.new("Focus NF-e API error #{response.status}", status: response.status, body: response.body)
   end
 end

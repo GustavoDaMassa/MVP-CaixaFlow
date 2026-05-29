@@ -3,6 +3,10 @@
     {
       "fingerprint": "cb5090fb8806b451b20180ceb04a0358f5f8d74d9b172f903603aacaf98d7889",
       "note": "Intencional: role/active são gerenciados exclusivamente por admins via Admin::BaseController#require_admin"
+    },
+    {
+      "fingerprint": "488c4d3d03cc59bf96da294782f4ee0d634bff8091f47aceee62fe5f24855dac",
+      "note": "Falso positivo: connection.delete é o método HTTP DELETE do Faraday, não SQL"
     }
   ]
 }

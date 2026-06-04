@@ -31,7 +31,7 @@ gem "sidekiq-cron"
 gem "redis", "~> 5.0"
 
 # Image processing (Active Storage)
-gem "image_processing", "~> 1.2"
+gem "image_processing", "~> 2.0"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"

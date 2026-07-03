@@ -3,7 +3,16 @@ class NfeStatusCheckJob < ApplicationJob
 
   # Consulta o status de notas pendentes na Focus NF-e.
   # Disparado por polling no front ou via sidekiq-cron a cada 2 minutos.
-  def perform(fiscal_document_id)
+  def perform(fiscal_document_id, account_id)
+    account = Account.find(account_id)
+    ActsAsTenant.with_tenant(account) do
+      run(fiscal_document_id)
+    end
+  end
+
+  private
+
+  def run(fiscal_document_id)
     doc    = FiscalDocument.find(fiscal_document_id)
     return unless doc.pending?
 
@@ -22,8 +31,6 @@ class NfeStatusCheckJob < ApplicationJob
   rescue FocusNfeClient::ApiError => e
     Rails.logger.error("[NfeStatusCheckJob] doc=#{fiscal_document_id} error=#{e.status} #{e.body}")
   end
-
-  private
 
   def map_status(focus_status)
     case focus_status

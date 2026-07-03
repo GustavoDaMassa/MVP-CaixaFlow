@@ -26,7 +26,7 @@ class FiscalDocumentsController < ApplicationController
 
   def check_status
     doc = @order.fiscal_document
-    NfeStatusCheckJob.perform_now(doc.id)
+    NfeStatusCheckJob.perform_now(doc.id, current_user.account_id)
     doc.reload
     redirect_to order_fiscal_document_path(@order),
       notice: "Status atualizado: #{status_label(doc.status)}"

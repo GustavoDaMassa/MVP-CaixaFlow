@@ -1,4 +1,5 @@
 class CashRegister < ApplicationRecord
+  acts_as_tenant :account
   belongs_to :user
 
   validates :opening_amount, numericality: { greater_than_or_equal_to: 0 }

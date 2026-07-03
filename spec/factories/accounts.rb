@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :account do
-    name { "MyString" }
-    subdomain { "MyString" }
-    active { false }
+    sequence(:name)      { |n| "Empresa #{n}" }
+    subdomain { "empresa-#{SecureRandom.hex(4)}" }
+    active { true }
   end
 end

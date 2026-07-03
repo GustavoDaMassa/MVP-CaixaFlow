@@ -5,5 +5,6 @@ FactoryBot.define do
     price { Faker::Commerce.price(range: 5.0..100.0) }
     active { true }
     association :category
+    account { ActsAsTenant.current_tenant || association(:account) }
   end
 end

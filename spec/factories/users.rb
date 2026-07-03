@@ -6,6 +6,7 @@ FactoryBot.define do
     password_confirmation { "password123" }
     role { :atendente }
     active { true }
+    account { ActsAsTenant.current_tenant || association(:account) }
 
     trait :admin do
       role { :admin }

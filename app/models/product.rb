@@ -1,4 +1,5 @@
 class Product < ApplicationRecord
+  acts_as_tenant :account
   belongs_to :category
   has_many :order_items, dependent: :destroy
 

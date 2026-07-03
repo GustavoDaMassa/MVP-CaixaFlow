@@ -5,5 +5,6 @@ FactoryBot.define do
     email { Faker::Internet.unique.email }
     address { Faker::Address.full_address }
     notes { nil }
+    account { ActsAsTenant.current_tenant || association(:account) }
   end
 end

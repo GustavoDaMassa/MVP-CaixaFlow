@@ -1,4 +1,5 @@
 class Order < ApplicationRecord
+  acts_as_tenant :account
   belongs_to :user
   belongs_to :customer, optional: true
   has_many :order_items, dependent: :destroy

@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  acts_as_tenant :account
   devise :database_authenticatable,
          :recoverable, :rememberable, :validatable
 

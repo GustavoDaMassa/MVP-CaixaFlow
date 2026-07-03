@@ -111,6 +111,15 @@
           <%= f.password_field :focus_nfe_token, class: "form-control", placeholder: @fiscal_configuration.focus_nfe_token.present? ? "Token já configurado — deixe em branco para manter" : "Cole o token aqui", autocomplete: "off" %>
           <p class="form-hint">Encontrado em Minhas Empresas → Tokens no painel Focus NF-e</p>
         </div>
+        <div class="form-group">
+          <%= f.label :ambiente_nfe, "Ambiente NF-e" %>
+          <%= f.select :ambiente_nfe,
+                [["Homologação (testes)", "homologacao"],
+                 ["Produção (notas reais)", "producao"]],
+                {},
+                class: "form-control" %>
+          <p class="form-hint">Use Homologação para testes — notas não têm validade fiscal</p>
+        </div>
       </div>
     </div>
 

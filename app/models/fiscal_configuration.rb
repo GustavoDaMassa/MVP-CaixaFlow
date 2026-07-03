@@ -1,5 +1,6 @@
 class FiscalConfiguration < ApplicationRecord
   acts_as_tenant :account
+  enum :ambiente_nfe, { homologacao: "homologacao", producao: "producao" }
   enum :regime_tributario, {
     simples_nacional: 1,
     simples_nacional_excesso: 2,

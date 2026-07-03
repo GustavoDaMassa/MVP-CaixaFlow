@@ -31,7 +31,7 @@ class FiscalConfigurationsController < ApplicationController
     params.require(:fiscal_configuration).permit(
       :cnpj, :ie, :im, :razao_social, :nome_fantasia, :regime_tributario,
       :logradouro, :numero, :complemento, :bairro, :municipio, :uf, :cep,
-      :codigo_municipio, :cfop_padrao, :serie_nfe, :focus_nfe_token
+      :codigo_municipio, :cfop_padrao, :serie_nfe, :focus_nfe_token, :ambiente_nfe
     )
   end
 end

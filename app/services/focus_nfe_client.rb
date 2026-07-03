@@ -13,7 +13,8 @@ class FocusNfeClient
 
   def initialize(token: nil, ambiente: nil)
     @token    = token    || FiscalConfiguration.current&.focus_nfe_token
-    @ambiente = ambiente || (Rails.env.production? ? :production : :homologacao)
+    config    = FiscalConfiguration.current
+    @ambiente = ambiente || (config&.producao? ? :production : :homologacao)
   end
 
   def emitir_nfe(ref:, payload:)

@@ -21,6 +21,9 @@ gem "ransack"
 # Pagination
 gem "kaminari"
 
+# Multitenancy
+gem "acts_as_tenant"
+
 # HTTP client
 gem "faraday"
 gem "faraday-retry"

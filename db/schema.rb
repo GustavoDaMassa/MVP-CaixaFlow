@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_28_182451) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_27_014657) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "accounts", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "subdomain", null: false
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["subdomain"], name: "index_accounts_on_subdomain", unique: true
+  end
 
   create_table "cash_registers", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -23,6 +32,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_28_182451) do
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_cash_registers_on_account_id"
     t.index ["user_id"], name: "index_cash_registers_on_user_id"
   end
 
@@ -31,6 +42,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_28_182451) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "ncm"
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_categories_on_account_id"
   end
 
   create_table "customers", force: :cascade do |t|
@@ -42,6 +55,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_28_182451) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "cpf_cnpj"
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_customers_on_account_id"
   end
 
   create_table "fiscal_configurations", force: :cascade do |t|
@@ -65,6 +80,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_28_182451) do
     t.string "focus_nfe_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_fiscal_configurations_on_account_id"
   end
 
   create_table "fiscal_documents", force: :cascade do |t|
@@ -80,6 +97,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_28_182451) do
     t.string "danfe_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_fiscal_documents_on_account_id"
     t.index ["order_id"], name: "index_fiscal_documents_on_order_id"
   end
 
@@ -104,6 +123,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_28_182451) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "payment_method", default: 0, null: false
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_orders_on_account_id"
     t.index ["customer_id"], name: "index_orders_on_customer_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
@@ -120,6 +141,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_28_182451) do
     t.datetime "updated_at", null: false
     t.string "ncm"
     t.string "unidade", default: "UN"
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_products_on_account_id"
     t.index ["category_id"], name: "index_products_on_category_id"
   end
 
@@ -134,15 +157,25 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_28_182451) do
     t.boolean "active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "cash_registers", "accounts"
   add_foreign_key "cash_registers", "users"
+  add_foreign_key "categories", "accounts"
+  add_foreign_key "customers", "accounts"
+  add_foreign_key "fiscal_configurations", "accounts"
+  add_foreign_key "fiscal_documents", "accounts"
   add_foreign_key "fiscal_documents", "orders"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
+  add_foreign_key "orders", "accounts"
   add_foreign_key "orders", "customers"
   add_foreign_key "orders", "users"
+  add_foreign_key "products", "accounts"
   add_foreign_key "products", "categories"
+  add_foreign_key "users", "accounts"
 end

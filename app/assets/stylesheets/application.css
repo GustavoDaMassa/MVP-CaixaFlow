@@ -385,33 +385,6 @@ nav.pagination .gap { border: none; background: none; }
 .pos-order { position: sticky; top: calc(var(--nav-height) + 1.5rem); }
 
 /* --- Footer ----------------------------------------------- */
-.app-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 0;
-  display: flex;
-  justify-content: center;
-  pointer-events: none;
-  user-select: none;
-}
-.app-footer__inner {
-  width: 100%;
-  max-width: 1200px;
-  padding: 0 1.5rem;
-  display: flex;
-  justify-content: center;
-}
-.app-footer__logo {
-  width: 100%;
-  height: 256px;
-  object-fit: fill;
-  opacity: 1;
-  display: block;
-}
-/* espaço para o conteúdo não ficar atrás do footer fixo */
-.app-body { padding-bottom: calc(256px + 1rem); }
 
 /* --- POS Login page --------------------------------------- */
 .pos-login-page {
@@ -595,7 +568,7 @@ nav.pagination .gap { border: none; background: none; }
   position: relative;
   width: 100vw;
   height: 100vh;
-  background-image: url('login_bg.png');
+  background-image: url('logoCaixaFlow.png');
   background-size: cover;
   background-position: center;
   display: flex;
@@ -737,5 +710,5 @@ nav.pagination .gap { border: none; background: none; }
 
   .app-body { padding: 1rem; }
   .cart-item { grid-template-columns: 1fr auto auto; }
-  .app-footer { display: none; }
+
 }

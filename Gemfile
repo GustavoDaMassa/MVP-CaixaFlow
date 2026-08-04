@@ -31,7 +31,7 @@ gem "faraday-retry"
 # Background jobs
 gem "sidekiq", "~> 7.0"
 gem "sidekiq-cron"
-gem "redis", "~> 5.0"
+gem "redis", "~> 6.0"
 
 # Image processing (Active Storage)
 gem "image_processing", "~> 1.2"
